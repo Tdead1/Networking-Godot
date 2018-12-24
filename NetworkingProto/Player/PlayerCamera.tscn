@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Player/CameraLogic.gd" type="Script" id=1]
+[ext_resource path="res://Player/PlayerShootingLogic.gd" type="Script" id=2]
+
+[node name="Camera" type="Camera" index="0"]
+
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = false
+fov = 70.0
+size = 1.0
+near = 0.05
+far = 100.0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+mouseSensitivity = 0.1
+
+[node name="RayCast" type="RayCast" parent="." index="0"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector3( 0, 0, -50 )
+collision_mask = 1
+script = ExtResource( 2 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+

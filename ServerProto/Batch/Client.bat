@@ -1,0 +1,1 @@
+"D:\Program Files\Godot\Godot.exe" -s "D:\Projects\Godot\ServerProto\Networking\Client.gd"
