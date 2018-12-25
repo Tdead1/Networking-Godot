@@ -12,7 +12,6 @@ func _init():
 	pass;
 
 func _process(delta):
-	
 	if(done != true):
 		if(socket.get_available_packet_count() > 0):
 			var data = socket.get_packet().get_string_from_ascii();

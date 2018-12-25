@@ -1,1 +1,2 @@
-"D:\Program Files\Godot\Godot.exe" -s "D:\Projects\Godot\ServerProto\Networking\Server.gd"
+"D:\Program Files\Godot\Godot.exe" -s "D:\Repros\Networking-Godot\ServerProto\Networking\Server.gd"
+PAUSE
