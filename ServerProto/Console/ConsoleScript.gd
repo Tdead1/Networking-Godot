@@ -1,15 +1,8 @@
 extends RichTextLabel
 
-export var text_to_display = "";
-
-func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
+onready var servernode = get_parent();
 
 func _process(delta):
-	# Called every frame. Delta is time since last frame.
-	# Update game logic here.
-	text = text_to_display;
+	text = servernode.debuglog;
 	
 	pass

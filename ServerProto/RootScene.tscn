@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Networking/Server.gd" type="Script" id=1]
 [ext_resource path="res://Networking/ClientCommands.gd" type="Script" id=2]
 [ext_resource path="res://Console/ConsoleScript.gd" type="Script" id=3]
+[ext_resource path="res://Console/InputConsole.gd" type="Script" id=4]
 
 [node name="Server" type="Node" index="0"]
 
@@ -18,16 +19,18 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 380.0
+margin_left = 225.0
 margin_top = 10.0
-margin_right = 993.0
-margin_bottom = 571.0
+margin_right = 1006.0
+margin_bottom = 531.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/selection_color = Color( 0.124008, 0.19745, 0.246094, 1 )
 bbcode_enabled = false
 bbcode_text = ""
 visible_characters = -1
@@ -40,7 +43,7 @@ scroll_following = true
 selection_enabled = false
 override_selected_font_color = false
 script = ExtResource( 3 )
-text_to_display = ""
+_sections_unfolded = [ "Rect", "Theme" ]
 
 [node name="MessageButton" type="Button" parent="." index="2"]
 
@@ -51,7 +54,7 @@ anchor_bottom = 0.0
 margin_left = 34.0
 margin_top = 22.0
 margin_right = 201.0
-margin_bottom = 94.0
+margin_bottom = 63.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -74,9 +77,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 32.0
-margin_top = 106.0
+margin_top = 166.0
 margin_right = 202.0
-margin_bottom = 178.0
+margin_bottom = 205.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -92,8 +95,59 @@ text = "Stop Server"
 flat = false
 align = 1
 
+[node name="SendButton" type="Button" parent="." index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 943.0
+margin_top = 540.0
+margin_right = 1015.0
+margin_bottom = 563.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Send"
+flat = false
+align = 1
+script = ExtResource( 4 )
+
+[node name="CommandLine" type="LineEdit" parent="SendButton" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -722.0
+margin_bottom = 24.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = " "
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+
 [connection signal="pressed" from="MessageButton" to="ConnectedClient" method="_on_MessageButton_pressed"]
 
 [connection signal="pressed" from="KillServerButton" to="ConnectedClient" method="_on_KillServerButton_pressed"]
+
+[connection signal="pressed" from="SendButton" to="SendButton" method="_on_SendButton_pressed"]
 
 
