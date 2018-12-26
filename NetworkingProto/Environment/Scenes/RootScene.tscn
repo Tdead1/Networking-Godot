@@ -1,230 +1,109 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Player/PlayerPawn.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Prefabs/1x1Cube.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Network/ClientScript.gd" type="Script" id=1]
+[ext_resource path="res://Player/PlayerPawn.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Prefabs/1x1Cube.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Environment" id=1]
 
 background_mode = 1
-background_sky_custom_fov = 0.0
 background_color = Color( 0.0211487, 0.359708, 0.492188, 1 )
 background_energy = 2.95
-background_canvas_max_layer = 0
 ambient_light_color = Color( 0.355469, 0.355469, 0.355469, 1 )
-ambient_light_energy = 1.0
-ambient_light_sky_contribution = 1.0
 fog_enabled = true
-fog_color = Color( 0.5, 0.6, 0.7, 1 )
 fog_sun_color = Color( 1, 0.666667, 0, 1 )
 fog_sun_amount = 1.0
-fog_depth_enabled = true
-fog_depth_begin = 10.0
-fog_depth_curve = 1.0
-fog_transmit_enabled = false
-fog_transmit_curve = 1.0
-fog_height_enabled = false
-fog_height_min = 0.0
-fog_height_max = 100.0
-fog_height_curve = 1.0
-tonemap_mode = 0
-tonemap_exposure = 1.0
-tonemap_white = 1.0
-auto_exposure_enabled = false
-auto_exposure_scale = 0.4
-auto_exposure_min_luma = 0.05
-auto_exposure_max_luma = 8.0
-auto_exposure_speed = 0.5
-ss_reflections_enabled = false
-ss_reflections_max_steps = 64
-ss_reflections_fade_in = 0.15
-ss_reflections_fade_out = 2.0
-ss_reflections_depth_tolerance = 0.2
-ss_reflections_roughness = true
-ssao_enabled = false
-ssao_radius = 1.0
-ssao_intensity = 1.0
-ssao_radius2 = 0.0
-ssao_intensity2 = 1.0
-ssao_bias = 0.01
-ssao_light_affect = 0.0
-ssao_color = Color( 0, 0, 0, 1 )
-ssao_quality = 0
-ssao_blur = 3
-ssao_edge_sharpness = 4.0
-dof_blur_far_enabled = false
-dof_blur_far_distance = 10.0
-dof_blur_far_transition = 5.0
-dof_blur_far_amount = 0.1
-dof_blur_far_quality = 1
-dof_blur_near_enabled = false
-dof_blur_near_distance = 2.0
-dof_blur_near_transition = 1.0
-dof_blur_near_amount = 0.1
-dof_blur_near_quality = 1
-glow_enabled = false
-glow_levels/1 = false
-glow_levels/2 = false
-glow_levels/3 = true
-glow_levels/4 = false
-glow_levels/5 = true
-glow_levels/6 = false
-glow_levels/7 = false
-glow_intensity = 0.8
-glow_strength = 1.0
-glow_bloom = 0.0
-glow_blend_mode = 2
-glow_hdr_threshold = 1.0
-glow_hdr_scale = 2.0
-glow_bicubic_upscale = false
-adjustment_enabled = false
-adjustment_brightness = 1.0
-adjustment_contrast = 1.0
-adjustment_saturation = 1.0
-_sections_unfolded = [ "Ambient Light", "Background", "Fog" ]
 
-[node name="Root" type="Node" index="0"]
+[node name="Root" type="Node"]
+script = ExtResource( 1 )
 
-[node name="TestEnvironment" type="WorldEnvironment" parent="." index="0"]
-
+[node name="TestEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
 
-[node name="PlayerPawn" parent="TestEnvironment" index="0" instance=ExtResource( 1 )]
-
+[node name="PlayerPawn" parent="TestEnvironment" instance=ExtResource( 2 )]
 speed = 100.0
 
-[node name="DirectionalLight" type="DirectionalLight" parent="TestEnvironment" index="1"]
-
+[node name="DirectionalLight" type="DirectionalLight" parent="TestEnvironment"]
 transform = Transform( 1, 0, 0, 0, 0.505341, 0.86292, 0, -0.86292, 0.505341, 0, 3.22675, 0 )
-layers = 1
-light_color = Color( 1, 1, 1, 1 )
-light_energy = 1.0
-light_indirect_energy = 1.0
-light_negative = false
-light_specular = 0.5
-light_bake_mode = 1
-light_cull_mask = -1
-shadow_enabled = false
-shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.1
-shadow_contact = 0.0
-shadow_reverse_cull_face = false
-editor_only = false
-directional_shadow_mode = 2
-directional_shadow_split_1 = 0.1
-directional_shadow_split_2 = 0.2
-directional_shadow_split_3 = 0.5
-directional_shadow_blend_splits = false
-directional_shadow_normal_bias = 0.8
-directional_shadow_bias_split_scale = 0.25
-directional_shadow_depth_range = 0
-directional_shadow_max_distance = 200.0
 
-[node name="StaticBody3" parent="TestEnvironment" index="2" instance=ExtResource( 2 )]
-
+[node name="StaticBody3" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.912375, 0, 0, 0, 0.912375, 0, 0, 0, 1.13104, 0.0998341, 0.453336, -6.88086 )
 
-[node name="StaticBody12" parent="TestEnvironment" index="3" instance=ExtResource( 2 )]
-
+[node name="StaticBody12" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.615673, 0, -0.834704, 0, 0.912375, 0, 0.673331, 0, 0.763228, 1.01118, 0.453336, 0.10831 )
 
-[node name="StaticBody23" parent="TestEnvironment" index="4" instance=ExtResource( 2 )]
-
+[node name="StaticBody23" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.358578, 0, -0.486145, 0, 0.538319, 0, 0.392159, 0, 0.444516, 2.10983, 3.73948, -1.28411 )
 
-[node name="StaticBody4" parent="TestEnvironment" index="5" instance=ExtResource( 2 )]
-
+[node name="StaticBody4" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.912375, 0, 0, 0, 0.912375, 0, 0, 0, 1.13104, -5.71982, 0.453336, -5.35261 )
 
-[node name="StaticBody15" parent="TestEnvironment" index="6" instance=ExtResource( 2 )]
-
+[node name="StaticBody15" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.615673, 0, -0.834704, 0, 0.912375, 0, 0.673331, 0, 0.763228, -4.04378, 0.453336, -3.15532 )
 
-[node name="StaticBody22" parent="TestEnvironment" index="7" instance=ExtResource( 2 )]
-
+[node name="StaticBody22" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.358578, 0, -0.486145, 0, 0.538319, 0, 0.392159, 0, 0.444516, -0.834257, 3.73948, -3.18489 )
 
-[node name="StaticBody5" parent="TestEnvironment" index="8" instance=ExtResource( 2 )]
-
+[node name="StaticBody5" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.912375, 0, 0, 0, 0.779474, 0.587825, 0, -0.474181, 0.966286, -12.8406, 0.12299, -0.171997 )
 
-[node name="StaticBody13" parent="TestEnvironment" index="9" instance=ExtResource( 2 )]
-
+[node name="StaticBody13" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.615673, 0.349945, -0.713118, 0, 0.779474, 0.587825, 0.673331, -0.319979, 0.652053, -12.6722, 0.12299, -4.91452 )
 
-[node name="StaticBody24" parent="TestEnvironment" index="10" instance=ExtResource( 2 )]
-
+[node name="StaticBody24" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.358578, 0.203813, -0.415331, 0, 0.459905, 0.346828, 0.392159, -0.18636, 0.379766, -5.85956, 3.54457, -4.20948 )
 
-[node name="StaticBody6" parent="TestEnvironment" index="11" instance=ExtResource( 2 )]
-
+[node name="StaticBody6" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.912375, 0, 0, 0, 0.779474, 0.587825, 0, -0.474181, 0.966286, -3.55783, 0.12299, 5.69783 )
 
-[node name="StaticBody20" parent="TestEnvironment" index="12" instance=ExtResource( 2 )]
-
+[node name="StaticBody20" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.615673, 0.349945, -0.713118, 0, 0.779474, 0.587825, 0.673331, -0.319979, 0.652053, -10.7401, 0.12299, 5.89709 )
 
-[node name="StaticBody28" parent="TestEnvironment" index="13" instance=ExtResource( 2 )]
-
+[node name="StaticBody28" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.358578, 0.203813, -0.415331, 0, 0.459905, 0.346828, 0.392159, -0.18636, 0.379766, -4.73428, 3.54457, 2.08737 )
 
-[node name="StaticBody7" parent="TestEnvironment" index="14" instance=ExtResource( 2 )]
-
+[node name="StaticBody7" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.912375, 0, 0, 0, 0.779474, 0.587825, 0, -0.474181, 0.966286, -3.50829, 0.12299, 3.01129 )
 
-[node name="StaticBody17" parent="TestEnvironment" index="15" instance=ExtResource( 2 )]
-
+[node name="StaticBody17" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.615673, 0.349945, -0.713118, 0, 0.779474, 0.587825, 0.673331, -0.319979, 0.652053, -8.72399, 0.12299, 4.12077 )
 
-[node name="StaticBody26" parent="TestEnvironment" index="16" instance=ExtResource( 2 )]
-
+[node name="StaticBody26" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.358578, 0.203813, -0.415331, 0, 0.459905, 0.346828, 0.392159, -0.18636, 0.379766, -3.56008, 3.54457, 1.05281 )
 
-[node name="StaticBody8" parent="TestEnvironment" index="17" instance=ExtResource( 2 )]
-
+[node name="StaticBody8" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.518193, -0.390277, 0.795307, 0, 0.779474, 0.587825, -0.750935, -0.269316, 0.548813, -6.90389, 0.12299, 0.846515 )
 
-[node name="StaticBody18" parent="TestEnvironment" index="18" instance=ExtResource( 2 )]
-
+[node name="StaticBody18" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.903867, -0.064605, 0.131652, 0, 0.779474, 0.587825, -0.124307, -0.469759, 0.957276, -9.41774, 0.12299, 0.154027 )
 
-[node name="StaticBody27" parent="TestEnvironment" index="19" instance=ExtResource( 2 )]
-
+[node name="StaticBody27" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.526426, -0.037627, 0.0766763, 0, 0.459905, 0.346828, -0.0723983, -0.273595, 0.557532, -3.96414, 3.54457, -1.25748 )
 
-[node name="StaticBody9" parent="TestEnvironment" index="20" instance=ExtResource( 2 )]
-
+[node name="StaticBody9" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.518193, -0.390277, 0.795307, 0, 0.779474, 0.587825, -0.750935, -0.269316, 0.548813, 1.77373, 0.12299, -2.30356 )
 
-[node name="StaticBody16" parent="TestEnvironment" index="21" instance=ExtResource( 2 )]
-
+[node name="StaticBody16" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.903867, -0.064605, 0.131652, 0, 0.779474, 0.587825, -0.124307, -0.469759, 0.957276, -1.23731, 0.12299, 4.43241 )
 
-[node name="StaticBody25" parent="TestEnvironment" index="22" instance=ExtResource( 2 )]
-
+[node name="StaticBody25" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.526426, -0.037627, 0.0766763, 0, 0.459905, 0.346828, -0.0723983, -0.273595, 0.557532, 0.800273, 3.54457, 1.23432 )
 
-[node name="StaticBody10" parent="TestEnvironment" index="23" instance=ExtResource( 2 )]
-
+[node name="StaticBody10" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.518193, -0.390277, 0.795307, 0, 0.779474, 0.587825, -0.750935, -0.269316, 0.548813, 2.60291, 0.122989, 2.0487 )
 
-[node name="StaticBody19" parent="TestEnvironment" index="24" instance=ExtResource( 2 )]
-
+[node name="StaticBody19" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.903867, -0.064605, 0.131652, 0, 0.779474, 0.587825, -0.124307, -0.469759, 0.957276, -3.88974, 0.122989, 7.98127 )
 
-[node name="StaticBody29" parent="TestEnvironment" index="25" instance=ExtResource( 2 )]
-
+[node name="StaticBody29" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( 0.526426, -0.037627, 0.0766763, 0, 0.459905, 0.346828, -0.0723983, -0.273595, 0.557532, -0.744544, 3.54457, 3.30122 )
 
-[node name="StaticBody11" parent="TestEnvironment" index="26" instance=ExtResource( 2 )]
-
+[node name="StaticBody11" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( -0.881855, 0.02099, -0.28892, -0.215379, -0.428095, 0.962457, -0.0914943, 0.805433, 0.519085, 7.08074, 0.12299, -0.971701 )
 
-[node name="StaticBody14" parent="TestEnvironment" index="27" instance=ExtResource( 2 )]
-
+[node name="StaticBody14" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( -0.527556, -0.580244, -0.578048, -0.215379, -0.428095, 0.962457, -0.712548, 0.558999, 0.137057, 1.36096, 0.12299, 9.24772 )
 
-[node name="StaticBody21" parent="TestEnvironment" index="28" instance=ExtResource( 2 )]
-
+[node name="StaticBody21" parent="TestEnvironment" instance=ExtResource( 3 )]
 transform = Transform( -0.307257, -0.337943, -0.336664, -0.127078, -0.252585, 0.567868, -0.414999, 0.325569, 0.0798242, 2.31355, 3.54457, 4.03883 )
-
 

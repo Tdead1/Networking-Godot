@@ -31,7 +31,6 @@ func _process(delta):
 		rot.y = rotation.y - camInput.x * mouseSensitivity * delta;
 		rot.z = rotation.z;
 		set_rotation(rot);
-		print(rotation);
 
 	#gives the third column of the transform, which is the forward.
 	get_global_transform().basis.z;
