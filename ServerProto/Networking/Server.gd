@@ -1,10 +1,6 @@
 extends Node
 
-var done = false;
-var socket = PacketPeerUDP.new();
-var connectedplayers = [];
 var debuglog = "Server Starting... ";
-
 var network = NetworkedMultiplayerENet.new();
 
 
@@ -28,47 +24,22 @@ func _peer_disconnected(id):
 	debuglog += "User disconnected. ID: " + str(id);
 	debuglog += "  Users online: " + str(get_tree().get_network_connected_peers().size()) + "\n";
 	pass;
+	
+	
+#########
+# Notes #
+#########
 
+# 4 replication options:
+# Remote: only on external machines
+# Sync  : run on all machines
+# Master: run on machine that owns the object (server master)
+# Slave : run on all connected machines EXCEPT for server master.
 
+# is_network_master(): True if this owns the object
+# is_network_server(): True if this is the server
+# hook up id's to r**** calls for making it specific
+# rpc_unreliable can be used to "hook up" and call functions on all machines (51:00)
+# rpc for tcp, unreliable for udp.
+# rset for variables (_unreliable for udp).
 
-
-
-#func _process(delta):
-#	if(done != true):
-#		if(socket.get_available_packet_count() > 0):
-#			var data = socket.get_packet().get_string_from_ascii();
-#			if(data == "quit"):
-#				done = true;
-#			elif(data == "player_login"):
-#				player_connect();
-#			else:
-#				debuglog += "Data received: " + data + "\n";
-#	else:
-#		socket.close();
-#		print("Exiting server application.");
-#		queue_free();
-#	pass;
-#
-#func player_connect(var player):
-#	connectedplayers.append(player);
-#	pass;
-#
-#func player_disconnect(var player):
-#	player.queue_free();
-#	connectedplayers.erase(player);
-#	pass;
-#
-#func _on_ConnectClientButton_pressed():
-#	var newPlayer = Node.new();
-#	newPlayer.set_owner(self);
-#	newPlayer.set_name("player#" + str(connectedplayers.size()));
-#	player_connect(newPlayer);
-#	pass;
-#
-#
-#func _on_KickClientButton_pressed():
-#	if(connectedplayers.size() == 0):
-#		debuglog += "I'm sorry Dave, I'm afraid I can't let you do that.";
-#	else:
-#		player_disconnect(connectedplayers[randi() % connectedplayers.size()]);
-#	pass

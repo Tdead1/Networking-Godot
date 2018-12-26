@@ -33,7 +33,7 @@ func _process(delta):
 		set_rotation(rot);
 
 	#gives the third column of the transform, which is the forward.
-	get_global_transform().basis.z;
+	#get_global_transform().basis.z;
 	
 	camInput = Vector2(0,0);
 	pass

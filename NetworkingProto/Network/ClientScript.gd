@@ -7,18 +7,19 @@ func _ready():
 	print("Creating network. \n");
 	var network = NetworkedMultiplayerENet.new();
 	network.create_client(server_adress, 4242);
-	get_tree().set_network_peer(network);
 	network.connect("connection_failed", self, "_on_connection_failed");
-	network.connect("network_peer_packet", self, "_on_packet_received");
+	
+	get_tree().set_network_peer(network);
+	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");
 	print("Finished setting up network connection. \n");
 	pass;
 
-func _on_connection_failed(error):
-	print("Connection failed, we'll get 'em next time. \n(error:) " + error);
+func _on_connection_failed():
+	print("Connection failed, we'll get 'em next time. \n) ");
 	pass;
 
 func _on_packet_received(id, packet):
-	print(packet.get_string_from_ascii());
+	print(packet.get_string_from_ascii() + str(id));
 	pass;
 
 func _process(delta):
