@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Prefabs/1x1Cube.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Player/PlayerPawn.tscn" type="PackedScene" id=2]
+
+[sub_resource type="Environment" id=1]
+
+background_mode = 3
+background_sky_custom_fov = 74.0
+background_color = Color( 0.12549, 0.184314, 0.188235, 1 )
+background_energy = 2.07
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.1
+
+[node name="Root" type="WorldEnvironment"]
+environment = SubResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.224582, 0.559514, -0.797814, -0.151609, 0.828821, 0.538582, 0.962589, -1.54803e-008, 0.270966, -0.537915, 7.72859, 1.64894 )
+
+[node name="StaticBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.537915, -0.294976, -5.89203 )
+
+[node name="StaticBody2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.537915, -0.294976, 1.64894 )
+
+[node name="PlayerPawn" parent="." instance=ExtResource( 2 )]
+speed = 10.0
+
+[node name="Node" type="Node" parent="."]
+

@@ -15,6 +15,6 @@ _global_script_class_icons={
 
 [application]
 
-config/name="NetworkingProto"
-run/main_scene="res://Environment/Scenes/RootScene.tscn"
+config/name="ClientProto"
+run/main_scene="res://Level/DefaultScene.tscn"
 config/icon="res://icon.png"

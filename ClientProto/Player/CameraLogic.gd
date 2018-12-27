@@ -5,11 +5,11 @@ extends Camera
 # var b = "textvar"
 
 var camInput = Vector2(0,0);
-var mouseMode = Input.MOUSE_MODE_CAPTURED;
+var mouseMode = Input.MOUSE_MODE_VISIBLE;
 export var mouseSensitivity = 0.1;
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED);
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	pass
 
 func _process(delta):
@@ -22,7 +22,7 @@ func _process(delta):
 	if(mouseMode == Input.MOUSE_MODE_VISIBLE):
 		if(Input.is_mouse_button_pressed(BUTTON_LEFT)):
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED);
-			mouseMode = Input.MOUSE_MODE_VISIBLE;
+			mouseMode = Input.MOUSE_MODE_CAPTURED;
 
 	#when mouse is captured.
 	if(mouseMode == Input.MOUSE_MODE_CAPTURED):
