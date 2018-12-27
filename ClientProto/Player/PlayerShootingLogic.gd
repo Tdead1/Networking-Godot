@@ -15,6 +15,7 @@ func _process(delta):
 		if is_colliding():
 			#returns object.
 			objectInAim = get_collider();
-			objectInAim.queue_free();
+			if(objectInAim.has_method("GetDamage")):
+				objectInAim.queue_free();
 	
 	pass
