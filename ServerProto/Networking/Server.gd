@@ -3,6 +3,8 @@ extends Node
 var debuglog = "Server Starting... ";
 var network = NetworkedMultiplayerENet.new();
 var playertemplate = preload("res://Player/PlayerPawn.tscn");
+var players = [];
+var ids = [];
 
 func _ready():
 	if(network.create_server(4242, 400) == OK):
@@ -12,7 +14,7 @@ func _ready():
 	get_tree().set_network_peer(network);
 	network.connect("peer_connected", self, "_peer_connected");
 	network.connect("peer_disconnected", self, "_peer_disconnected");
-	
+	set_network_master(1);
 	pass;
 
 func _peer_connected(id):
@@ -23,14 +25,33 @@ func _peer_connected(id):
 	add_child(newplayer);
 	newplayer._setup_owner(id);
 	
+	ids.append(id);
+	newplayer.rpc("create_players", ids);
+	for i in range(0, players.size()):
+		players[i].rpc("create_player", id);
+	
+	players.append(newplayer);
+	
+	
 	pass;
 
 func _peer_disconnected(id):
-	get_node("/root/Root/Player#" + str(id)).queue_free();
+	var oldplayer = get_node("/root/Root/Player#" + str(id));
+	oldplayer.rpc("remove_player", oldplayer);
+	players.erase(oldplayer);
+	ids.erase(id);
+	
+	oldplayer.queue_free();
+	
 	debuglog += "User disconnected. ID: " + str(id);
 	debuglog += "  Users online: " + str(get_tree().get_network_connected_peers().size()) + "\n";
 	pass;
-	
+
+func _process(delta):
+	#for i in range(0, players.size()):
+	#	players[i].rpc("create_player", id);
+	pass;
+
 #########
 # Notes #
 #########

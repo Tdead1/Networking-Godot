@@ -3,9 +3,10 @@ extends KinematicBody
 # Replication variables:
 var server_adress = "127.0.0.1";
 onready var network = NetworkedMultiplayerENet.new();
-
+var local_playerinstance = preload("res://Network/ServerPlayerInstance.tscn");
+var local_players = [];
 # class member variables:
-export var speed = 10.0;
+export var speed = 1000.0;
 var moveInput = Vector3(0,0,0);
 var is_pressed = false;
 	
@@ -13,41 +14,38 @@ var is_pressed = false;
 func _ready():
 	print("Creating client. \n");
 	
-
 	network.create_client(server_adress, 4242);
 	network.connect("connection_failed", self, "_on_connection_failed");
-	
+	network.connect("connection_succeeded", self, "_on_connection_success");
 	get_tree().set_network_peer(network);
 	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");
 	name = "Player#" + str(get_tree().multiplayer.get_network_unique_id());
-	
-	print("Finished setting up client connection. \n");
 	pass
 
 func _process(delta):
-	moveInput = Vector3(0,0,0);
+	if(is_network_master()):
+		moveInput = Vector3(0,0,0);
 
-	if(Input.is_key_pressed(KEY_W)):
-		moveInput.x += speed * delta;
-	if(Input.is_key_pressed(KEY_S)):
-		moveInput.x -= speed * delta;
-	if(Input.is_key_pressed(KEY_A)):
-		moveInput.z -= speed * delta; 
-	if(Input.is_key_pressed(KEY_D)):
-		moveInput.z += speed * delta;
+		if(Input.is_key_pressed(KEY_W)):
+			moveInput.x += speed * delta;
+		if(Input.is_key_pressed(KEY_S)):
+			moveInput.x -= speed * delta;
+		if(Input.is_key_pressed(KEY_A)):
+			moveInput.z -= speed * delta; 
+		if(Input.is_key_pressed(KEY_D)):
+			moveInput.z += speed * delta;
 		
-	if(Input.is_key_pressed(KEY_Q)):
-		if(!is_pressed):
-			print("Disconnecting from server.");
-			get_tree().set_network_peer(null);
-			is_pressed = true;
-	else:
-		is_pressed = false;
-	
-	if(get_tree().get_network_connected_peers().size() > 0):
-		# Tell the other computer about our new position so it can update 
-		rpc_unreliable("set_transform", transform);   
-
+		if(Input.is_key_pressed(KEY_Q)):
+			if(!is_pressed):
+				print("Disconnecting from server.");
+				get_tree().set_network_peer(null);
+				is_pressed = true;
+		else:
+			is_pressed = false;
+		
+		if(get_tree().get_network_connected_peers().size() > 0):
+			# Tell the other computer about our new position so it can update 
+			rpc_unreliable("set_transform", transform);   
 	pass
 
 func _physics_process(delta):
@@ -56,11 +54,44 @@ func _physics_process(delta):
 	
 	
 func _on_connection_failed():
-	print("Connection failed, we'll get 'em next time. \n)");
-	queue_free();
+	print("Connection failed (server down?) \n");
+	pass;
+
+func _on_connection_success():
+	print("Connected to server.\n");
+	set_network_master(get_tree().get_network_unique_id());
+	
+	print(str(get_tree().get_network_connected_peers().size()));
+	
 	pass;
 
 func _on_packet_received(id, packet):
-	print(packet.get_string_from_ascii() + str(id));
+	var command = packet.get_string_from_ascii();
+	print(command);
 	pass;
 	
+master func create_players(ids):
+	if(is_network_master()):
+		for i in range(0, ids.size()):
+			if(ids[i] != get_tree().get_network_unique_id()):
+				var server_instance = local_playerinstance.instance();
+				get_parent().add_child(server_instance);
+				local_players.push_back(server_instance);
+				server_instance.name = "Player#" + str(ids[i]);
+				print("Created " + server_instance.name); 
+				
+		print("Other players loaded. Player amount: " + str(local_players.size()));
+	pass;
+
+master func create_player(id):
+	if(id != get_tree().get_network_unique_id()):
+		var server_instance = local_playerinstance.instance();
+		get_parent().add_child(server_instance);
+		local_players.push_back(server_instance);
+		server_instance.name = "Player#" + str(id);
+		print(server_instance.name + " has joined!"); 
+	pass;
+	
+master func remove_player(player):
+	print ("I don't know how to destroy things yet okay...");
+	pass;

@@ -19,13 +19,28 @@ environment = SubResource( 1 )
 transform = Transform( 0.224582, 0.559514, -0.797814, -0.151609, 0.828821, 0.538582, 0.962589, -1.54803e-008, 0.270966, -0.537915, 7.72859, 1.64894 )
 
 [node name="StaticBody" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.537915, -0.294976, -5.89203 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.537915, 0.994737, -8.29133 )
+
+[node name="StaticBody3" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.15712, 0.994737, -8.83242 )
+
+[node name="StaticBody4" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.06526, 0.994737, -2.83876 )
+
+[node name="StaticBody5" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.06526, 1.02198, -6.10886 )
+
+[node name="StaticBody6" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.06526, 3.01812, -4.5271 )
+
+[node name="StaticBody7" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1216, 1.01059, -7.83512 )
 
 [node name="StaticBody2" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.537915, -0.294976, 1.64894 )
+transform = Transform( 12.1992, 0, 0, 0, 0.198146, 0, 0, 0, 12.1992, -0.537915, -0.198647, 1.64894 )
 
 [node name="PlayerPawn" parent="." instance=ExtResource( 2 )]
-speed = 10.0
+speed = 1000.0
 
 [node name="Node" type="Node" parent="."]
 
