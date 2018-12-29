@@ -9,7 +9,6 @@
 
 [node name="KinematicBody" type="KinematicBody"]
 script = ExtResource( 1 )
-speed = 1.0
 
 [node name="PlayerMesh" parent="." instance=ExtResource( 2 )]
 transform = Transform( 0.25, 0, 0, 0, -1.09278e-008, -0.5, 0, 0.25, -2.18557e-008, 0, 0.75, 0 )

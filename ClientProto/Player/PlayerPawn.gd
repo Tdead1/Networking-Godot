@@ -44,8 +44,9 @@ func _process(delta):
 			is_pressed = false;
 		
 		if(get_tree().get_network_connected_peers().size() > 0):
-			# Tell the other computer about our new position so it can update 
-			rpc_unreliable("set_transform", transform);   
+			# Tell the other computer about our new position so it can update
+			var clienttransform = transform.rotated(Vector3(0,1,0), find_node("PlayerCamera").yrotation); 
+			rpc_unreliable("set_transform", clienttransform);   
 	pass
 
 func _physics_process(delta):
@@ -92,6 +93,9 @@ master func create_player(id):
 		print(server_instance.name + " has joined!"); 
 	pass;
 	
-master func remove_player(player):
-	print ("I don't know how to destroy things yet okay...");
+master func remove_player(id):
+	var oldplayer = get_parent().get_node("Player#" + str(id));
+	local_players.erase(oldplayer);
+	oldplayer.queue_free();
+	print ("Player#" + str(id) + " left, so we destroyed him.");
 	pass;

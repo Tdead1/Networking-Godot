@@ -7,7 +7,15 @@ func _setup_owner(owning_id):
 	id = owning_id;
 	pass;
 
-slave func set_transform(clienttransform):
+puppet func set_transform(clienttransform):
 	transform = clienttransform;
 	pass;
+
+puppet func remove_player(id):
+	pass;
 	
+puppet func create_player(id):
+	pass;
+
+puppet func create_players(ids):
+	pass;
