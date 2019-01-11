@@ -53,7 +53,7 @@ func _peer_disconnected(id):
 
 # 4 replication options:
 # Remote: only on external machines
-# Sync  : run on all machines
+# Sync  : synchronize with server rpc call.
 # Master: run on machine that owns the object (master)
 # Slave : run on all connected machines EXCEPT for master.
 
