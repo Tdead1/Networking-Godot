@@ -1,11 +1,10 @@
-extends KinematicBody
+extends Spatial
 
 func init():
 	set_network_master(1);
 	pass
-
-sync func set_transform(tf):
-	if(get_network_master() == 1):
-		transform = tf;
-	pass;
 	
+sync func set_rotation(rt):
+	if(get_network_master() == 1):
+		rotation = rt;
+	pass;

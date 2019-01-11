@@ -18,8 +18,9 @@ func _ready():
 	pass;
 
 func _peer_connected(id):
-	debuglog += "User connected. ID: " + str(id);
-	debuglog += "  Users online: " + str(get_tree().get_network_connected_peers().size()) + "\n";
+	#            User disconnected. ID:
+	debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size());
+	debuglog += "   -> User connected.    ID: " + str(id) + "\n";
 	
 	var newplayer = playertemplate.instance();
 	add_child(newplayer);
@@ -43,9 +44,8 @@ func _peer_disconnected(id):
 	players.erase(oldplayer);
 	ids.erase(id);
 	oldplayer.queue_free();
-	
-	debuglog += "User disconnected. ID: " + str(id);
-	debuglog += "  Users online: " + str(get_tree().get_network_connected_peers().size()) + "\n";
+	debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size()) ;
+	debuglog += "   -> User disconnected. ID: " + str(id) + "\n";
 	pass;
 
 #########

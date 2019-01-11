@@ -9,6 +9,7 @@ var local_players = [];
 export var speed = 1000.0;
 var moveInput = Vector3(0,0,0);
 var is_pressed = false;
+var connected = false;
 	
 	
 func _ready():
@@ -23,9 +24,8 @@ func _ready():
 	pass
 
 func _process(delta):
-	if(is_network_master()):
+	if(connected):
 		moveInput = Vector3(0,0,0);
-
 		if(Input.is_key_pressed(KEY_W)):
 			moveInput.x += speed * delta;
 		if(Input.is_key_pressed(KEY_S)):
@@ -45,7 +45,7 @@ func _process(delta):
 		
 		if(get_tree().get_network_connected_peers().size() > 0):
 			# Tell the other computer about our new position so it can update
-			var clienttransform = transform.rotated(Vector3(0,1,0), find_node("PlayerCamera").yrotation); 
+			var clienttransform = transform; #.rotated(Vector3(0,1,0), find_node("PlayerCamera").yrotation); 
 			rpc_unreliable("set_transform", clienttransform);   
 	pass
 
@@ -61,9 +61,8 @@ func _on_connection_failed():
 func _on_connection_success():
 	print("Connected to server.\n");
 	set_network_master(get_tree().get_network_unique_id());
-	
 	print(str(get_tree().get_network_connected_peers().size()));
-	
+	connected = true;
 	pass;
 
 func _on_packet_received(id, packet):
