@@ -18,7 +18,6 @@ func _ready():
 	pass;
 
 func _peer_connected(id):
-	#            User disconnected. ID:
 	debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size());
 	debuglog += "   -> User connected.    ID: " + str(id) + "\n";
 	
@@ -29,7 +28,7 @@ func _peer_connected(id):
 	ids.append(id);
 	newplayer.rpc("create_players", ids);
 	for i in range(0, players.size()):
-		players[i].rpc("create_player", id);
+		players[i].rpc_id(ids[i], "create_player", id);
 	
 	players.append(newplayer);
 	pass;
@@ -38,7 +37,7 @@ func _peer_disconnected(id):
 	var oldplayer = get_node("/root/Root/Player#" + str(id));
 	#clients remove the disconnected player.
 	for i in range(0, players.size()):
-		players[i].rpc("remove_player", id);
+		players[i].rpc_id(ids[i], "remove_player", id);
 	
 	# server then erases the disconnected player.
 	players.erase(oldplayer);
