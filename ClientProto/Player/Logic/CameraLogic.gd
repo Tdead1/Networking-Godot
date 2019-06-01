@@ -4,13 +4,14 @@ extends Camera
 # var a = 2
 # var b = "textvar"
 
-var camInput = Vector2(0,0);
+var camInput = Vector2(0.0, 0.0);
 var mouseMode = Input.MOUSE_MODE_VISIBLE;
-var yrotation = 0.0;
 export var mouseSensitivity = 2;
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
+	get_node("Crosshair").position.x = ProjectSettings.get_setting("display/window/size/width") / 2;
+	get_node("Crosshair").position.y = ProjectSettings.get_setting("display/window/size/height") / 2;
 	pass
 
 func _process(delta):
@@ -28,21 +29,18 @@ func _process(delta):
 	if(get_parent().connected == true):
 		#when mouse is captured.
 		if(mouseMode == Input.MOUSE_MODE_CAPTURED):
-			var rot = Vector3(0,0,0);
-			rot.x = clamp(rotation.x - camInput.y * mouseSensitivity * delta, -0.5 * PI, 0.5 * PI);
-			rot.y = rotation.y - camInput.x * mouseSensitivity * delta;
-			yrotation = rot.y;
+			var rot = Vector3(0.0,0.0,0.0);
+			rot.x = clamp(rotation.x - camInput.y / 10 * mouseSensitivity * delta, -0.5 * PI, 0.5 * PI);
+			rot.y = rotation.y - camInput.x / 10 * mouseSensitivity * delta;
 			rot.z = rotation.z;
 			set_rotation(rot);
-	
-			#gives the third column of the transform, which is the forward.
-			#get_global_transform().basis.z;
-			rpc_unreliable("set_rotation", rotation);
-			camInput = Vector2(0,0);
+			camInput = Vector2(camInput.x / 10, camInput.y / 10);
+			
+		rpc_unreliable("set_rotation", rotation);
 	pass
 
 func _input(event):
 	#is is actually is of type.
 	if event is InputEventMouseMotion:
-		camInput = event.relative;
+		camInput += event.relative;
 	pass

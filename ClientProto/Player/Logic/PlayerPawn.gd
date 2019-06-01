@@ -3,10 +3,10 @@ extends KinematicBody
 # Replication variables:
 var server_adress = "127.0.0.1";
 onready var network = NetworkedMultiplayerENet.new();
-var local_playerinstance = preload("res://Network/ServerPlayerInstance.tscn");
+var local_playerinstance = preload("res://Player/ServerInstance/ServerPlayerInstance.tscn");
 var local_players = [];
 # class member variables:
-export var speed = 1000.0;
+export var speed = 300.0;
 var moveInput = Vector3(0,0,0);
 var is_pressed = false;
 var connected = false;

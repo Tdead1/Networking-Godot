@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Player/CameraLogic.gd" type="Script" id=1]
-[ext_resource path="res://Player/PlayerShooting.gd" type="Script" id=2]
+[ext_resource path="res://Player/Logic/CameraLogic.gd" type="Script" id=1]
+[ext_resource path="res://Player/Logic/PlayerShooting.gd" type="Script" id=2]
 
 
 [node name="Camera" type="Camera"]

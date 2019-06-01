@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Player/PlayerPawn.gd" type="Script" id=1]
-[ext_resource path="res://Player/PlayerMesh.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Player/PlayerCamera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player/Logic/PlayerPawn.gd" type="Script" id=1]
+[ext_resource path="res://Player/SubScenes/PlayerMesh.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player/SubScenes/PlayerCamera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player/Visuals/SM_Rifle.glb" type="PackedScene" id=4]
+
+[sub_resource type="StreamTexture" id=2]
+
+flags = 4
+load_path = "res://.import/crosshair.png-1907c019aec9d713272b6abd898f42af.stex"
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -15,6 +21,12 @@ transform = Transform( 0.25, 0, 0, 0, -1.09278e-008, -0.5, 0, 0.25, -2.18557e-00
 
 [node name="PlayerCamera" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0 )
+
+[node name="Crosshair" type="Sprite" parent="PlayerCamera"]
+texture = SubResource( 2 )
+
+[node name="SM_Rifle" parent="PlayerCamera" instance=ExtResource( 4 )]
+transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, -0.457184, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.25, 0, 0, 0, -1.09278e-008, -0.5, 0, 0.25, -2.18557e-008, 0, 0.75, 0 )
