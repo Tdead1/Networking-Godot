@@ -2,13 +2,13 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/T_Default.png-a15616da752c2dc951b55ef7ca3b7bc0.s3tc.stex"
-path.etc2="res://.import/T_Default.png-a15616da752c2dc951b55ef7ca3b7bc0.etc2.stex"
+path.s3tc="res://.import/T_Default.png-f1a372d144fc7c95c139872a91ecc1be.s3tc.stex"
+path.etc2="res://.import/T_Default.png-f1a372d144fc7c95c139872a91ecc1be.etc2.stex"
 
 [deps]
 
-source_file="res://Prefabs/Terrain/Textures/T_Default.png"
-dest_files=[ "res://.import/T_Default.png-a15616da752c2dc951b55ef7ca3b7bc0.s3tc.stex", "res://.import/T_Default.png-a15616da752c2dc951b55ef7ca3b7bc0.etc2.stex" ]
+source_file="res://Prefabs/Dev/T_Default.png"
+dest_files=[ "res://.import/T_Default.png-f1a372d144fc7c95c139872a91ecc1be.s3tc.stex", "res://.import/T_Default.png-f1a372d144fc7c95c139872a91ecc1be.etc2.stex" ]
 
 [params]
 
