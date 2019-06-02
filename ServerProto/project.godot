@@ -19,6 +19,11 @@ config/name="ServerProto"
 run/main_scene="res://RootScene.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=450
+window/size/height=300
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

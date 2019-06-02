@@ -8,7 +8,7 @@ func _ready():
 	skel = get_parent().get_node("SK_AnimatedMesh/SM_Robot");
 	head_bone = skel.find_bone("Head");
 	pass
-	
+
 sync func set_rotation(rt):
 	if(get_network_master() == 1):
 		get_parent().rotation.y = rt.y;

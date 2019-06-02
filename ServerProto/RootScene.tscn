@@ -11,10 +11,9 @@
 script = ExtResource( 1 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 17.0
-margin_top = 10.0
-margin_right = 1006.0
-margin_bottom = 531.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -59.0
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/selection_color = Color( 0.124008, 0.19745, 0.246094, 1 )
 text = "Rich as fuck"
@@ -22,16 +21,20 @@ scroll_following = true
 script = ExtResource( 2 )
 
 [node name="SendButton" type="Button" parent="."]
-margin_left = 943.0
-margin_top = 540.0
-margin_right = 1015.0
-margin_bottom = 563.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -40.0
+margin_bottom = -20.0
 text = "Send"
 script = ExtResource( 3 )
 
 [node name="CommandLine" type="LineEdit" parent="SendButton"]
-margin_left = -928.0
-margin_bottom = 24.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -2.0
+margin_bottom = 22.0
 text = " "
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

@@ -7,10 +7,14 @@ var local_playerinstance = preload("res://Player/ServerInstance/ServerPlayerInst
 var local_players = [];
 # class member variables:
 export var speed = 300.0;
+export var jumpForce = 150;
 var moveInput = Vector3(0,0,0);
-var is_pressed = false;
+var jumpTime = 0.2;
+var jumpTimer = 0.0;
+var jumping = false;
+var canjump = true;
 var connected = false;
-	
+var health = 100.0;
 	
 func _ready():
 	print("Creating client. \n");
@@ -25,6 +29,7 @@ func _ready():
 
 func _process(delta):
 	if(connected):
+		# Input
 		moveInput = Vector3(0,0,0);
 		if(Input.is_key_pressed(KEY_W)):
 			moveInput.x += speed * delta;
@@ -34,15 +39,26 @@ func _process(delta):
 			moveInput.z -= speed * delta; 
 		if(Input.is_key_pressed(KEY_D)):
 			moveInput.z += speed * delta;
+		if(Input.is_action_just_pressed("Jump")):
+			if(jumping != true && canjump == true && jumpTimer <= 0.0):
+				jumpTimer = jumpTime;
+				canjump = false;
+		if(Input.is_action_just_pressed("Disconnect")):
+			print("Disconnecting from server.");
+			get_tree().set_network_peer(null);
 		
-		if(Input.is_key_pressed(KEY_Q)):
-			if(!is_pressed):
-				print("Disconnecting from server.");
-				get_tree().set_network_peer(null);
-				is_pressed = true;
+		# Jumping logic
+		if(jumpTimer > 0.0):
+			moveInput.y += jumpForce * jumpTimer;
+			jumpTimer -= delta;
+		
+		# Check if grounded
+		if(test_move(transform, Vector3(0, -0.001, 0))):
+			canjump = true;
 		else:
-			is_pressed = false;
-		
+			moveInput.y -= 10.0;
+			
+		# Connection logic
 		if(get_tree().get_network_connected_peers().size() > 0):
 			# Tell the other computer about our new position so it can update
 			var clienttransform = transform; #.rotated(Vector3(0,1,0), find_node("PlayerCamera").yrotation); 
@@ -79,7 +95,6 @@ master func create_players(ids):
 				local_players.push_back(server_instance);
 				server_instance.name = "Player#" + str(ids[i]);
 				print("Created " + server_instance.name); 
-				
 		print("Other players loaded. Player amount: " + str(local_players.size()));
 	pass;
 
@@ -97,4 +112,8 @@ master func remove_player(id):
 	local_players.erase(oldplayer);
 	oldplayer.queue_free();
 	print ("Player#" + str(id) + " left, so we destroyed him.");
+	pass;
+	
+master func SetHealth(newhealth):
+	health = newhealth;
 	pass;
