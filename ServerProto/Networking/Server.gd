@@ -2,50 +2,21 @@ extends Node
 
 var debuglog = "Server Starting... ";
 var network = NetworkedMultiplayerENet.new();
-var playertemplate = preload("res://Player/PlayerPawn.tscn");
-var players = [];
-var ids = [];
+
+var networkEventHandler;
 
 func _ready():
+	networkEventHandler = get_node("NetworkEventHandler");
+	
 	if(network.create_server(4242, 400) == OK):
 		debuglog += "Server running on port 4242. \n";
 	else:
 		debuglog += "Server setup failed!";
+	
 	get_tree().set_network_peer(network);
-	network.connect("peer_connected", self, "_peer_connected");
-	network.connect("peer_disconnected", self, "_peer_disconnected");
+	network.connect("peer_connected", networkEventHandler, "ConnectPeer");
+	network.connect("peer_disconnected", networkEventHandler, "DisconnectPeer");
 	set_network_master(1);
-	pass;
-
-func _peer_connected(id):
-	debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size());
-	debuglog += "   -> User connected.    ID: " + str(id) + "\n";
-	
-	var newplayer = playertemplate.instance();
-	add_child(newplayer);
-	newplayer._setup_owner(id);
-	
-	ids.append(id);
-	newplayer.rpc("create_players", ids);
-	for i in range(0, players.size()):
-		players[i].rpc_id(ids[i], "create_player", id);
-	
-	players.append(newplayer);
-	#newplayer.SetHealth(100.0);
-	pass;
-
-func _peer_disconnected(id):
-	var oldplayer = get_node("/root/Root/Player#" + str(id));
-	#clients remove the disconnected player.
-	for i in range(0, players.size()):
-		players[i].rpc_id(ids[i], "remove_player", id);
-	
-	# server then erases the disconnected player.
-	players.erase(oldplayer);
-	ids.erase(id);
-	oldplayer.queue_free();
-	debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size()) ;
-	debuglog += "   -> User disconnected. ID: " + str(id) + "\n";
 	pass;
 
 #########
