@@ -4,6 +4,10 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/T_DesertRock.png-1ab1dbb9e36fd1f390167e3daa6ca59a.s3tc.stex"
 path.etc2="res://.import/T_DesertRock.png-1ab1dbb9e36fd1f390167e3daa6ca59a.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 

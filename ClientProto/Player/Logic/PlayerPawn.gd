@@ -3,16 +3,11 @@ extends KinematicBody
 # Replication variables:
 var server_adress = "127.0.0.1";
 onready var network = NetworkedMultiplayerENet.new();
-var local_playerinstance = preload("res://Player/ServerInstance/ServerPlayerInstance.tscn");
+var local_playerinstance = preload("res://Player/Remote/RemotePlayerInstance.tscn");
 var local_players = [];
 # class member variables:
 export var speed = 300.0;
-export var jumpForce = 150;
 var moveInput = Vector3(0,0,0);
-var jumpTime = 0.2;
-var jumpTimer = 0.0;
-var jumping = false;
-var canjump = true;
 var connected = false;
 var health = 100.0;
 	
@@ -39,22 +34,11 @@ func _process(delta):
 			moveInput.z -= speed * delta; 
 		if(Input.is_key_pressed(KEY_D)):
 			moveInput.z += speed * delta;
-		if(Input.is_action_just_pressed("Jump")):
-			if(jumping != true && canjump == true && jumpTimer <= 0.0):
-				jumpTimer = jumpTime;
-				canjump = false;
+
 		if(Input.is_action_just_pressed("Disconnect")):
 			print("Disconnecting from server.");
 			get_tree().set_network_peer(null);
-		
-		# Jumping logic
-		if(jumpTimer > 0.0):
-			moveInput.y += jumpForce * jumpTimer;
-			jumpTimer -= delta;
-		
-		# Check if grounded
-		if(test_move(transform, Vector3(0, -0.001, 0))):
-			canjump = true;
+
 		else:
 			moveInput.y -= 10.0;
 			
@@ -116,4 +100,5 @@ master func remove_player(id):
 	
 master func SetHealth(newhealth):
 	health = newhealth;
+	get_node("PlayerCamera/HUD/HealthBar").value = health;
 	pass;

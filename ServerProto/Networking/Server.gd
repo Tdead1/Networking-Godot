@@ -31,6 +31,7 @@ func _peer_connected(id):
 		players[i].rpc_id(ids[i], "create_player", id);
 	
 	players.append(newplayer);
+	#newplayer.SetHealth(100.0);
 	pass;
 
 func _peer_disconnected(id):

@@ -9,7 +9,7 @@
 
 background_mode = 3
 background_sky_custom_fov = 74.0
-background_color = Color( 0.12549, 0.184314, 0.188235, 1 )
+background_color = Color( 0.12549, 0.560784, 0.74902, 1 )
 background_energy = 2.07
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.1
@@ -19,6 +19,10 @@ environment = SubResource( 1 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.224582, 0.559514, -0.797814, -0.151609, 0.828821, 0.538582, 0.962589, -1.54803e-008, 0.270966, -0.537915, 7.72859, 1.64894 )
+light_energy = 2.8
+shadow_enabled = true
+shadow_color = Color( 0.0666667, 0.0705882, 0.0862745, 1 )
+shadow_bias = 0.0
 
 [node name="StaticBody" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.537915, 0.994737, -8.29133 )
@@ -53,13 +57,13 @@ transform = Transform( 0.442509, 0, -1.7564, 0, 1, 0, 0.896764, 0, 0.866695, 15.
 transform = Transform( -0.530132, 0, -0.902934, 0, 1, 0, 0.740391, 0, -0.510791, 28.3074, 6.52587, 4.51257 )
 
 [node name="DesertRockTerrace7" parent="." instance=ExtResource( 4 )]
-transform = Transform( 0.117649, 0, -0.464922, 0, 0.192174, 0, 0.598719, 0, -0.204505, -2.83932, 8.19384, 14.0156 )
+transform = Transform( 0.341044, 0.00411122, -0.253834, 0.0145587, 0.191829, 0.0178334, 0.390244, -0.0107494, 0.221166, -1.1298, 8.05738, 15.3934 )
 
 [node name="DesertRockTerrace8" parent="." instance=ExtResource( 4 )]
 transform = Transform( -0.430475, 0, -0.405492, 0, 0.192174, 0, 0.11378, 0, -0.583954, -9.09432, 7.78604, 5.39133 )
 
 [node name="DesertRockTerrace9" parent="." instance=ExtResource( 4 )]
-transform = Transform( -0.178318, 0, -0.167969, 0, 0.585513, 0, 0.0471825, 0, -0.242155, -7.34853, 5.79082, 10.0648 )
+transform = Transform( 0.227245, 0, 0.343964, 0, 0.585513, 0, -0.265965, 0, 0.293889, -7.34853, 5.79082, 10.0648 )
 
 [node name="DesertRockTerrace2" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.1343, 1.33789, -14.4823 )
@@ -73,9 +77,9 @@ transform = Transform( 0.994601, 0.103367, 0.00914191, -0.10377, 0.990734, 0.087
 [node name="DesertRockTerrace10" parent="." instance=ExtResource( 4 )]
 transform = Transform( 0.128483, -0.0740063, 0.988947, -0.10377, 0.990734, 0.0876218, -0.986268, -0.113881, 0.119612, 24.8284, -0.636875, -10.3627 )
 
-[node name="DesertRockTerrace11" parent="." instance=ExtResource( 4 )]
-transform = Transform( 0.131045, -0.109589, 0.9762, 0.219473, 0.268824, 0.127877, -0.961584, -0.0530178, 0.153429, 18.1443, 0.995496, -20.8389 )
-
 [node name="DesertRockTerrace4" parent="." instance=ExtResource( 4 )]
 transform = Transform( 0.682053, 0.111339, -0.0185751, -0.113451, 0.517349, -0.0210906, 0.0137459, 0.031219, 0.691855, 7.53803, -0.643054, -27.1092 )
+
+[node name="DesertRockTerrace11" parent="." instance=ExtResource( 4 )]
+transform = Transform( -0.360911, -0.0624255, -0.553427, -0.0867574, 0.522149, 0.00888382, 0.340021, 0.0669672, -0.585161, 17.9569, -0.159408, -25.043 )
 
