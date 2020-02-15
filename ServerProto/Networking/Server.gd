@@ -6,6 +6,7 @@ var network = NetworkedMultiplayerENet.new();
 var networkEventHandler;
 
 func _ready():
+	set_network_master(1);
 	networkEventHandler = get_node("NetworkEventHandler");
 	
 	if(network.create_server(4242, 400) == OK):
@@ -16,8 +17,7 @@ func _ready():
 	get_tree().set_network_peer(network);
 	network.connect("peer_connected", networkEventHandler, "ConnectPeer");
 	network.connect("peer_disconnected", networkEventHandler, "DisconnectPeer");
-	set_network_master(1);
-	pass;
+	return;
 
 #########
 # Notes #
@@ -25,7 +25,7 @@ func _ready():
 
 # 4 replication options:
 # Remote: only on external machines
-# Sync  : synchronize with server rpc call.
+# Remotesync : synchronize with rpc call.
 # Master: run on machine that owns the object (master)
 # Slave : run on all connected machines EXCEPT for master.
 

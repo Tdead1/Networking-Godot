@@ -40,7 +40,14 @@ master func remove_player(id):
 	ids.erase(id);
 	return;
 
-func GetDamage(ID, damage):
+master func set_local_transform(id, transform):
+	var player = get_node("/root/Root/Player#" + str(id));
+	player.transform = transform;
+	return;
+	
+#func GetDamage(ID, damage):
+#	ID;
+#	damage;
 	#health -= damage;
 	#rpc("SetHealth", health);
-	return;
+#	return;

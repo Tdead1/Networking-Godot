@@ -6,12 +6,14 @@ onready var network = NetworkedMultiplayerENet.new();
 
 var myRemotePlayerScene = preload("res://Player/Remote/RemotePlayerInstance.tscn");
 var myRemotePlayers;
-var connected = false;
-var local_player;
+var myIsConnected = false;
+var myLocalPlayer;
+var myID = 0;
 
 func _ready():
 	set_network_master(1);
-	local_player = get_parent().get_node("PlayerPawn");
+	myLocalPlayer = get_parent().get_node("PlayerPawn");
+	
 	print("Creating client. \n");
 	
 	network.create_client(server_adress, 4242);
@@ -20,7 +22,7 @@ func _ready():
 	get_tree().set_network_peer(network);
 	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");
 	
-	local_player.name = "Player#" + str(get_tree().multiplayer.get_network_unique_id());
+	myLocalPlayer.name = "Player#" + str(get_tree().multiplayer.get_network_unique_id());
 	return;
 	
 
@@ -30,24 +32,25 @@ func _on_connection_failed():
 
 func _on_connection_success():
 	print("Connected to server.\n");
-	set_network_master(get_tree().get_network_unique_id());
+	#set_network_master(get_tree().get_network_unique_id());
 	print(str(get_tree().get_network_connected_peers().size()));
-	connected = true;
+	myID = get_tree().multiplayer.get_network_unique_id();
+	myIsConnected = true;
 	return;
 	
 	
 puppet func create_players(ids):
-	if(is_network_master()):
-		for i in range(0, ids.size()):
-			if(ids[i] == get_tree().get_network_unique_id()):
-				continue;
-				
-			var remoteInstance = myRemotePlayerScene.instance();
-			get_parent().add_child(remoteInstance);
-			myRemotePlayers.push_back(remoteInstance);
-			remoteInstance.name = "Player#" + str(ids[i]);
-			print("Created " + remoteInstance.name); 
-		print("Other players loaded. Player amount: " + str(myRemotePlayers.size()));
+	for i in range(0, ids.size()):
+		if(ids[i] == get_tree().get_network_unique_id()):
+			continue;
+
+		var remoteInstance = myRemotePlayerScene.instance();
+		get_parent().add_child(remoteInstance);
+		myRemotePlayers.push_back(remoteInstance);
+		remoteInstance.name = "Player#" + str(ids[i]);
+	
+		print("Created " + remoteInstance.name); 
+	print("Other players loaded. Player amount: " + str(myRemotePlayers.size()));
 	return;
 
 puppet func create_player(id):
@@ -76,4 +79,10 @@ func _on_packet_received(id, packet):
 	var command = packet.get_string_from_ascii();
 	print(command);
 	return;
+	
+func _physics_process(delta):
+	if(myIsConnected):
+		# Send the server all the information we need!
+		rpc_unreliable("set_player_transform", myID, myLocalPlayer.transform); 
+		return;  
 	
