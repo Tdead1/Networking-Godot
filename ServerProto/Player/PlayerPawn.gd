@@ -2,14 +2,14 @@ extends Spatial
 
 var health = 100.0;
 var id = "";
+var camera;
 
-func SetupOwner(owning_id):
-	set_name("Player#" + str(owning_id));
-	find_node("PlayerCamera").set_network_master(owning_id);
-	set_network_master(owning_id);
-	id = owning_id;
-	pass;
+func _ready():
+	camera = get_node("PlayerCamera");
+	return;
 
-func set_transform(clienttransform):
-	transform = clienttransform;
-	pass;
+puppet func set_player_transform(id, playertransform, cameratransform):
+	get_parent().debuglog += "Updating player transforms! ";
+	transform = playertransform;
+	camera.transform = cameratransform;
+	return;

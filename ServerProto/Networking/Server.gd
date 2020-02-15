@@ -24,8 +24,8 @@ func _ready():
 #########
 
 # 4 replication options:
-# Remote: only on external machines
-# Remotesync : synchronize with rpc call.
+# Remote: Run only if my machines is not the calling machine
+# Remotesync : Run on all machines including this one.
 # Master: run on machine that owns the object (master)
 # Slave : run on all connected machines EXCEPT for master.
 

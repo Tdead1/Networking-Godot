@@ -28,6 +28,7 @@ func _ready():
 
 func _on_connection_failed():
 	print("Connection failed (server down?) \n");
+	myIsConnected = false;
 	return;
 
 func _on_connection_success():
@@ -50,7 +51,7 @@ puppet func create_players(ids):
 		remoteInstance.name = "Player#" + str(ids[i]);
 	
 		print("Created " + remoteInstance.name); 
-	print("Other players loaded. Player amount: " + str(myRemotePlayers.size()));
+	#print("Other players loaded. Player amount: " + str(ids.size()));
 	return;
 
 puppet func create_player(id):
@@ -69,20 +70,14 @@ puppet func remove_player(id):
 	oldplayer.queue_free();
 	print ("Player#" + str(id) + " left, so we destroyed him.");
 	return;
-	
-#master func SetHealth(newhealth):
-#	health = newhealth;
-#	get_node("PlayerCamera/HUD/HealthBar").value = health;
-#	return;
 
-func _on_packet_received(id, packet):
+func _on_packet_received(_id, packet):
 	var command = packet.get_string_from_ascii();
 	print(command);
 	return;
 	
-func _physics_process(delta):
-	if(myIsConnected):
-		# Send the server all the information we need!
-		rpc_unreliable("set_player_transform", myID, myLocalPlayer.transform); 
-		return;  
-	
+func _physics_process(_delta):
+	return;
+
+#puppet func update_player_transform(id, playertransform, cameratransform):
+#	return;

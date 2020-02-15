@@ -22,11 +22,12 @@ master func create_player(id):
 	get_parent().debuglog += "   -> User connected.      ID: " + str(id) + "\n";
 	
 	var newplayer = playertemplate.instance();
+	newplayer.set_name("Player#" + str(id));
+	newplayer.set_network_master(id);
 	get_parent().add_child(newplayer);
-	newplayer.SetupOwner(id);
 	
-	ids.append(id);
 	players.append(newplayer);
+	ids.append(id);
 	
 	return;
 
@@ -40,11 +41,6 @@ master func remove_player(id):
 	ids.erase(id);
 	return;
 
-master func set_local_transform(id, transform):
-	var player = get_node("/root/Root/Player#" + str(id));
-	player.transform = transform;
-	return;
-	
 #func GetDamage(ID, damage):
 #	ID;
 #	damage;

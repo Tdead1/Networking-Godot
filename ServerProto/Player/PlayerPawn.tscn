@@ -16,4 +16,3 @@ script = ExtResource( 3 )
 
 [node name="PlayerMesh" type="Spatial" parent="."]
 script = ExtResource( 4 )
-
