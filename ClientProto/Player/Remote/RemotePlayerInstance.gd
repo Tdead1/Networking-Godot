@@ -1,12 +1,7 @@
 extends KinematicBody
 
-func _ready():
-	set_network_master(1);
-	pass
+var camera;
 
-sync func set_transform(tf):
-	
-	if(get_network_master() == 1):
-		transform = tf;
-	pass;
-	
+func _ready():
+	camera = get_node("PlayerCamera");
+	return;	

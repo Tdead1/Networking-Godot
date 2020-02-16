@@ -32,11 +32,9 @@ func _process(delta):
 
 func _physics_process(_delta):
 	# Send the server all the information we need!
-	print("Trying to update player transform");
-	rpc_unreliable("update_player_transform",  get_tree().get_network_unique_id(), transform, camera.transform); 
+	rpc_unreliable("UpdatePlayerTransform",  get_tree().get_network_unique_id(), transform, camera.transform); 
 	return;  
 
-master func update_player_transform(id, playerTransform, cameraTransform):
+master func UpdatePlayerTransform(id, playerTransform, cameraTransform):
 	move_and_slide(moveInput.rotated(Vector3(0,1,0), get_node("PlayerCamera").rotation.y + 0.5 * PI));
-	print("Updating player transform on client");	
 	return;
