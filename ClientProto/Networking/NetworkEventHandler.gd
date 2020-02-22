@@ -1,8 +1,8 @@
 extends Node
 
 # Replication variables:
-var server_adress = "127.0.0.1";
-onready var network = NetworkedMultiplayerENet.new();
+var myServerAdress = "127.0.0.1";
+onready var myNetwork = NetworkedMultiplayerENet.new();
 
 var myRemotePlayerScene = preload("res://Player/Remote/RemotePlayerInstance.tscn");
 var myRemotePlayers = [];
@@ -16,10 +16,10 @@ func _ready():
 	
 	print("Creating client. \n");
 	
-	network.create_client(server_adress, 4242);
-	network.connect("connection_failed", self, "_on_connection_failed");
-	network.connect("connection_succeeded", self, "_on_connection_success");
-	get_tree().set_network_peer(network);
+	myNetwork.create_client(myServerAdress, 4242);
+	myNetwork.connect("connection_failed", self, "_on_connection_failed");
+	myNetwork.connect("connection_succeeded", self, "_on_connection_success");
+	get_tree().set_network_peer(myNetwork);
 	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");
 	
 	myLocalPlayer.name = "Player#" + str(get_tree().multiplayer.get_network_unique_id());
@@ -32,7 +32,6 @@ func _on_connection_failed():
 
 func _on_connection_success():
 	print("Connected to server.\n");
-	#set_network_master(get_tree().get_network_unique_id());
 	print(str(get_tree().get_network_connected_peers().size()));
 	myID = get_tree().multiplayer.get_network_unique_id();
 	myIsConnected = true;

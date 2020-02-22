@@ -1,38 +1,40 @@
 extends KinematicBody
 
 # class member variables:
-export var speed = 300.0;
-var moveInput = Vector3(0,0,0);
-var health = 100.0;
-var camera;
+export var mySpeed = 300.0;
+var myMoveInput = Vector3(0,0,0);
+var myHealth = 100.0;
+var myCamera;
+var myNetworkEventHanlder;
 
 func _ready():
 	set_network_master(get_tree().get_network_unique_id());
-	camera = get_node("PlayerCamera");
+	myCamera = get_node("PlayerCamera");
+	myNetworkEventHanlder = get_parent().get_node("NetworkEventHandler");
 	return;
 	
 
 func _process(delta):
 	# Input
-	moveInput = Vector3(0,0,0);
+	myMoveInput = Vector3(0,0,0);
 	if(Input.is_key_pressed(KEY_W)):
-		moveInput.x += speed * delta;
+		myMoveInput.x += mySpeed * delta;
 	if(Input.is_key_pressed(KEY_S)):
-		moveInput.x -= speed * delta;
+		myMoveInput.x -= mySpeed * delta;
 	if(Input.is_key_pressed(KEY_A)):
-		moveInput.z -= speed * delta; 
+		myMoveInput.z -= mySpeed * delta; 
 	if(Input.is_key_pressed(KEY_D)):
-		moveInput.z += speed * delta;
+		myMoveInput.z += mySpeed * delta;
 	if(Input.is_action_just_pressed("Disconnect")):
 		print("Disconnecting from server.");
 		get_tree().set_network_peer(null);
 	else:
-		moveInput.y -= 10.0;
+		myMoveInput.y -= 10.0;
 	return;
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Send the server all the information we need!
-	#print("Hitting the physics process delta.");
-	move_and_slide(moveInput.rotated(Vector3(0,1,0), get_node("PlayerCamera").rotation.y + 0.5 * PI));
-	rpc_id(1, "UpdatePlayerTransform", transform, camera.transform); 
+	move_and_slide(myMoveInput.rotated(Vector3(0,1,0), get_node("PlayerCamera").rotation.y + 0.5 * PI));
+	if(myNetworkEventHanlder.myIsConnected):
+		rpc_unreliable_id(1, "UpdatePlayerTransform", transform, myCamera.transform); 
 	return;  
