@@ -71,13 +71,13 @@ puppet func RemovePlayer(id):
 puppet func UpdateRemotePlayer(id, playertransform, cameratransform):
 	if(id == get_tree().get_network_unique_id()):
 		return;
-	print("WORKING!? " + "Player#" + str(id));
+		
 	var remotePlayer = get_parent().get_node("Player#" + str(id));
-	remotePlayer.transform = playertransform;
-	remotePlayer.camera.transform = cameratransform;
-	return;
-
-puppet func UpdatePlayerTransform(id, playertransform, cameratransform):
+	var playerposition = playertransform.origin;
+	var cameraforward = cameratransform.basis.z;
+	cameraforward.y = 0;
+	cameraforward = playerposition - cameraforward.normalized();	
+	remotePlayer.look_at_from_position(playertransform.origin, cameraforward, Vector3(0,1,0));
 	return;
 
 func _on_packet_received(_id, packet):

@@ -8,7 +8,8 @@ func _ready():
 	camera = get_node("PlayerCamera");
 	return;
 
-puppet func SetPlayerTransform(id, playertransform, cameratransform):
+puppet func UpdatePlayerTransform(playertransform, cameratransform):
+	#get_parent().debuglog += "Received player transfrom! \n";
 	transform = playertransform;
 	camera.transform = cameratransform;
 	return;
