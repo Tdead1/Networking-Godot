@@ -4,4 +4,3 @@
 
 [node name="ServerObject" type="Node"]
 script = ExtResource( 1 )
-

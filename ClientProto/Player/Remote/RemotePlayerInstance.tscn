@@ -11,7 +11,7 @@
 
 [sub_resource type="CapsuleMesh" id=2]
 
-[node name="ServerPlayerInstance" type="KinematicBody"]
+[node name="RemotePlayerInstance" type="KinematicBody"]
 script = ExtResource( 1 )
 
 [node name="SK_AnimatedMesh" parent="." instance=ExtResource( 2 )]

@@ -74,6 +74,8 @@ puppet func UpdateRemotePlayer(id, playertransform, cameratransform):
 	var remotePlayer = get_parent().get_node("Player#" + str(id));
 	var playerposition = playertransform.origin;
 	var cameraforward = cameratransform.basis.z;
+	var skeletalMesh = remotePlayer.get_node("SK_AnimatedMesh/SM_Robot");
+	skeletalMesh.set_bone_pose(skeletalMesh.find_bone("Head"), cameratransform);
 	cameraforward.y = 0;
 	cameraforward = playerposition - cameraforward.normalized();	
 	remotePlayer.look_at_from_position(playertransform.origin, cameraforward, Vector3(0,1,0));
