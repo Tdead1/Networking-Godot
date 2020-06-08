@@ -39,8 +39,6 @@ func _physics_process(delta):
 	# Gravity
 	if(!test_move(transform, Vector3(0, -0.01, 0))):
 		myMoveInput.y = 0.0 if myVelocity.y > 0 else myVelocity.y - 0.4;
-		
-	print(!test_move(transform, Vector3(0, -0.01, 0)));
 	
 	# Send the server all the information we need!
 	myVelocity = move_and_slide(myMoveInput.rotated(Vector3(0,1,0), get_node("PlayerCamera").rotation.y + 0.5 * PI), Vector3(0,1,0));
