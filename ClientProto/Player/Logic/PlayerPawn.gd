@@ -35,7 +35,7 @@ func _process(delta):
 
 	return;
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Gravity
 	if(!test_move(transform, Vector3(0, -0.01, 0))):
 		myMoveInput.y = 0.0 if myVelocity.y > 0 else myVelocity.y - 0.4;
@@ -47,5 +47,5 @@ func _physics_process(delta):
 		
 	if(myNetworkEventHanlder.myIsConnected):
 		rpc_unreliable_id(1, "UpdatePlayerTransform", transform, myCamera.transform); 
-		
+	
 	return;  
