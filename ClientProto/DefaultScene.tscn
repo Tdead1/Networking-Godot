@@ -46,7 +46,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.06526, 3.01812, -4.68413 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1216, 1.01059, -7.83512 )
 
 [node name="PlayerPawn" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45.218, -1.90735e-06, 41.4809 )
+transform = Transform( 0.583357, 0, -0.812216, 0, 1, 0, 0.812216, 0, 0.583357, -45.218, -1.90735e-06, 41.4809 )
 
 [node name="Spatial" parent="." instance=ExtResource( 4 )]
 transform = Transform( 400, 0, 0, 0, 1, 0, 0, 0, 400, 0, -1, 0 )
