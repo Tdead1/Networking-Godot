@@ -2,17 +2,17 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/SM_SciFiBuilding2.79.dae-4d9c8f7b912aded18c3d22f81dafbcff.scn"
+path="res://.import/Lobby.dae-62685d9e938395b9682b33945ed1c4d4.scn"
 
 [deps]
 
-source_file="res://Prefabs/Buildings/SM_SciFiBuilding2.79.dae"
-dest_files=[ "res://.import/SM_SciFiBuilding2.79.dae-4d9c8f7b912aded18c3d22f81dafbcff.scn" ]
+source_file="res://Prefabs/Buildings/Lobby/Lobby.dae"
+dest_files=[ "res://.import/Lobby.dae-62685d9e938395b9682b33945ed1c4d4.scn" ]
 
 [params]
 
 nodes/root_type="Spatial"
-nodes/root_name="Building"
+nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
@@ -24,6 +24,7 @@ meshes/ensure_tangents=true
 meshes/storage=0
 meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
+skins/use_named_skins=true
 external_files/store_in_subdir=false
 animation/import=true
 animation/fps=15

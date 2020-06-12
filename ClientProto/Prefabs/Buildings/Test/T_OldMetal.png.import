@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/T_OldMetal.png-dd28973cfee45c99bfc556568f368a45.s3tc.stex"
-path.etc2="res://.import/T_OldMetal.png-dd28973cfee45c99bfc556568f368a45.etc2.stex"
+path.s3tc="res://.import/T_OldMetal.png-eb5e64b9877262499992dbe7ce977816.s3tc.stex"
+path.etc2="res://.import/T_OldMetal.png-eb5e64b9877262499992dbe7ce977816.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Prefabs/Buildings/T_OldMetal.png"
-dest_files=[ "res://.import/T_OldMetal.png-dd28973cfee45c99bfc556568f368a45.s3tc.stex", "res://.import/T_OldMetal.png-dd28973cfee45c99bfc556568f368a45.etc2.stex" ]
+source_file="res://Prefabs/Buildings/Test/T_OldMetal.png"
+dest_files=[ "res://.import/T_OldMetal.png-eb5e64b9877262499992dbe7ce977816.s3tc.stex", "res://.import/T_OldMetal.png-eb5e64b9877262499992dbe7ce977816.etc2.stex" ]
 
 [params]
 

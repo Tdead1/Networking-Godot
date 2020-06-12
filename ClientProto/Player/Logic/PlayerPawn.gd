@@ -41,7 +41,9 @@ func _physics_process(delta):
 		myMoveInput.y = 0.0 if myVelocity.y > 0 else myVelocity.y - 0.4;
 	
 	# Send the server all the information we need!
-	myVelocity = move_and_slide(myMoveInput.rotated(Vector3(0,1,0), get_node("PlayerCamera").rotation.y + 0.5 * PI), Vector3(0,1,0));
+	var forwardMovement = myMoveInput.rotated(Vector3(0,1,0), get_node("PlayerCamera").rotation.y + rotation.y + 0.5 * PI);
+	var up = Vector3(0,1,0);
+	myVelocity = move_and_slide(forwardMovement, up);
 		
 	if(myNetworkEventHanlder.myIsConnected):
 		rpc_unreliable_id(1, "UpdatePlayerTransform", transform, myCamera.transform); 
