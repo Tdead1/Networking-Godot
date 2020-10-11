@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player/Logic/PlayerPawn.gd" type="Script" id=1]
 [ext_resource path="res://Player/SubScenes/PlayerMesh.tscn" type="PackedScene" id=2]
@@ -6,10 +6,6 @@
 [ext_resource path="res://Player/Visuals/SM_Rifle.glb" type="PackedScene" id=4]
 [ext_resource path="res://Player/Logic/PlayerShooting.gd" type="Script" id=5]
 [ext_resource path="res://Player/UI/HUD.tscn" type="PackedScene" id=6]
-
-[sub_resource type="StreamTexture" id=1]
-flags = 4
-load_path = "res://.import/crosshair.png-1907c019aec9d713272b6abd898f42af.stex"
 
 [sub_resource type="CapsuleShape" id=2]
 margin = 0.001
@@ -23,9 +19,6 @@ transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08,
 
 [node name="PlayerCamera" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0 )
-
-[node name="Crosshair" type="Sprite" parent="PlayerCamera"]
-texture = SubResource( 1 )
 
 [node name="SM_Rifle" parent="PlayerCamera" instance=ExtResource( 4 )]
 transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, -0.457184, 0 )

@@ -10,8 +10,6 @@ export var myMouseSensitivity = 2;
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
-	get_node("Crosshair").position.x = ProjectSettings.get_setting("display/window/size/width") / 2;
-	get_node("Crosshair").position.y = ProjectSettings.get_setting("display/window/size/height") / 2;
 	return;
 
 func _process(delta):
