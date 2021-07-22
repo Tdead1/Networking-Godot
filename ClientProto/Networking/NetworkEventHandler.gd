@@ -5,7 +5,9 @@ var myServerAdress = "127.0.0.1";
 onready var myNetwork = NetworkedMultiplayerENet.new();
 
 var myRemotePlayerScene = preload("res://Player/Remote/RemotePlayerInstance.tscn");
+var mySphereEnemyTemplate = preload("res://Prefabs/Enemies/EnemySphere.tscn");
 var myRemotePlayers = [];
+var myEnemies = [];
 var myIsConnected = false;
 var myLocalPlayer;
 var myID = 0;
@@ -68,17 +70,39 @@ puppet func RemovePlayer(id):
 	return;
 
 puppet func UpdateRemotePlayer(id, playertransform, cameratransform):
+	#print("Received update message from server!");
 	if(id == get_tree().get_network_unique_id()):
 		return;
 		
 	var remotePlayer = get_parent().get_node("Player#" + str(id));
-	var playerposition = playertransform.origin;
-	var cameraforward = cameratransform.basis.z;
-	var skeletalMesh = remotePlayer.get_node("SK_AnimatedMesh/SM_Robot");
-	skeletalMesh.set_bone_pose(skeletalMesh.find_bone("Head"), cameratransform);
-	cameraforward.y = 0;
-	cameraforward = playerposition - cameraforward.normalized();	
-	remotePlayer.look_at_from_position(playertransform.origin, cameraforward, Vector3(0,1,0));
+	if(remotePlayer == null || playertransform == null || cameratransform == null):
+		return;
+	
+	#print(playertransform.origin);
+	var cameraLookAtTransform = cameratransform;# cameratransform.rotated(playertransform.
+	var cameraForward = cameraLookAtTransform.basis.z;
+	cameraForward.y = 0;
+	cameraForward = cameraForward.normalized();
+	var cameraPosition = playertransform.origin + cameratransform.origin;
+	var cameraLookAt = cameraPosition + cameraForward;
+	
+	#print(cameraLookAtTransform);
+	#var skeletalMesh = remotePlayer.get_node("SK_AnimatedMesh/SM_Robot");
+	#skeletalMesh.set_bone_pose(skeletalMesh.find_bone("Head"), cameratransform);
+	remotePlayer.look_at_from_position(playertransform.origin, playertransform.origin + cameraLookAt - cameraPosition, Vector3(0,1,0));
+	return;
+
+puppet func CreateSphereEnemy(id):
+	var newEnemy = mySphereEnemyTemplate.instance();
+	newEnemy.set_name("SphereEnemy" + str(id));
+	myEnemies.append(newEnemy);
+	get_parent().add_child(newEnemy);
+	print ("Created enemy! ID: " + str(id));
+	return;
+
+puppet func UpdateSphereEnemy(id, transform):
+	#print ("Sphere Enemy: Got update from server: " + str(id) + " " + str(transform));
+	myEnemies[id].transform = transform;
 	return;
 
 func _on_packet_received(_id, packet):
