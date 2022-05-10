@@ -27,7 +27,7 @@ func _ready():
 	return;
 	
 
-func _process(delta):
+func _process(_delta):
 	# Input
 	myMoveInput = Vector3(0, 0, 0);
 	if(Input.is_key_pressed(KEY_W)):
@@ -48,7 +48,7 @@ func _process(delta):
 	
 	return;
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Pre-movement logic
 	var compensatedMoveInput = myMoveInput;
 	if(myJumpStatus == JumpStatus.HasInput):
@@ -62,7 +62,7 @@ func _physics_process(delta):
 	var speedVector = rotatedInputVector * myAcceleration + myVelocity;
 	
 	speedVector.y = clamp(speedVector.y, -10, 1000);
-	var compensatedSpeedVector = Vector2(speedVector.x, speedVector.z).clamped(myMaxSpeed);
+	var compensatedSpeedVector = Vector2(speedVector.x, speedVector.z).limit_length(myMaxSpeed);
 	speedVector.x = compensatedSpeedVector.x;	
 	speedVector.z = compensatedSpeedVector.y;
 	speedVector.x /= myFriction; 
@@ -81,7 +81,7 @@ func _physics_process(delta):
 		myJumpStatus = JumpStatus.InAir;
 	
 	# Send the server all the information we need!
-	if(myNetworkEventHanlder.myIsConnected):
+	if(myNetworkEventHanlder.myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTED):
 		rpc_unreliable_id(1, "UpdatePlayerTransform", transform, myCamera.transform); 
 	
 	return;  

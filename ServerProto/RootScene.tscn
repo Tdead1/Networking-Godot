@@ -44,4 +44,5 @@ text = " "
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
+
 [connection signal="pressed" from="SendButton" to="SendButton" method="_on_SendButton_pressed"]

@@ -2,45 +2,95 @@ extends Node
 
 # Replication variables:
 var myServerAdress = "127.0.0.1";
-onready var myNetwork = NetworkedMultiplayerENet.new();
+onready var myNetwork;
+var myConnectionStatus = NetworkedMultiplayerPeer.CONNECTION_CONNECTING;
 
+var myConnectTimer = 0.0;
+const myConnectTimerDuration = 5.0;
 var myRemotePlayerScene = preload("res://Player/Remote/RemotePlayerInstance.tscn");
 var mySphereEnemyTemplate = preload("res://Prefabs/Enemies/EnemySphere.tscn");
 var myRemotePlayers = [];
 var myEnemies = [];
-var myIsConnected = false;
 var myLocalPlayer;
 var myID = 0;
 
 func _ready():
+	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");	
+	myNetwork = NetworkedMultiplayerENet.new();
 	set_network_master(1);
 	myLocalPlayer = get_parent().get_node("PlayerPawn");
+	print("Creating client.");
+	#myNetwork.connect("connection_failed", self, "_on_connection_failed");
+	#myNetwork.connect("connection_succeeded", self, "_on_connection_success");
+
+	AttemptConnect();
+	return;
+
+func _process(delta):
+	var newConnectionStatus = myNetwork.get_connection_status();
+	match (myConnectionStatus):
+		NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
+			myConnectTimer += delta;
+			if (myConnectTimer > myConnectTimerDuration):
+				newConnectionStatus = NetworkedMultiplayerPeer.CONNECTION_CONNECTING;
+		NetworkedMultiplayerPeer.CONNECTION_CONNECTING:
+			myConnectTimer += delta;
+			if (myConnectTimer > myConnectTimerDuration):
+				newConnectionStatus = NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED;
+			continue;
+		NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+			continue;
 	
-	print("Creating client. \n");
+	if (myConnectionStatus == newConnectionStatus):
+		return;
 	
-	myNetwork.create_client(myServerAdress, 4242);
-	myNetwork.connect("connection_failed", self, "_on_connection_failed");
-	myNetwork.connect("connection_succeeded", self, "_on_connection_success");
+	myConnectTimer = 0.0;
+	match(newConnectionStatus):
+		NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
+			if (myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+				print("Connection timed out.");
+			else:
+				print("Server has shut down.");
+			Disconnect();
+		NetworkedMultiplayerPeer.CONNECTION_CONNECTING:
+			AttemptConnect();
+		NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+			ConnectionSuccess();
+			
+	#print("Connection status changed from: " + String(myConnectionStatus) + " to " + String(newConnectionStatus));
+	myConnectionStatus = newConnectionStatus;
+	
+	return;
+
+func Disconnect():
+	print("We have disconnected from the server.");
+	for i in myRemotePlayers:
+		i.queue_free();
+	myRemotePlayers = [];
+	for i in myEnemies:
+		i.queue_free();
+	myEnemies = [];
+	
+	myNetwork.close_connection();
+	get_tree().set_network_peer(null);
+	return;
+
+func AttemptConnect():
+	myNetwork = NetworkedMultiplayerENet.new();
+	print("Attempting to connect.");
+	myNetwork.create_client(myServerAdress, 4242); 
 	get_tree().set_network_peer(myNetwork);
-	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");
-	
 	myLocalPlayer.name = "Player#" + str(get_tree().multiplayer.get_network_unique_id());
 	return;
 
-func _on_connection_failed():
-	print("Connection failed (server down?) \n");
-	myIsConnected = false;
-	return;
-
-func _on_connection_success():
-	print("Connected to server.\n");
+func ConnectionSuccess():
+	print("Connected to server.");
 	print(str(get_tree().get_network_connected_peers().size()));
 	myID = get_tree().multiplayer.get_network_unique_id();
-	myIsConnected = true;
 	return;
 
 puppet func CreatePlayer(id):
-	print("Create player was called from the server! \n \n"); 
+	print("Create player was called from the server!"); 
 	if(id != get_tree().get_network_unique_id()):
 		var remoteInstance = myRemotePlayerScene.instance();
 		get_parent().add_child(remoteInstance);

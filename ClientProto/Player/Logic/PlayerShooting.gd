@@ -22,7 +22,7 @@ func _process(delta):
 				myObjectInAim = get_collider();
 				print(myObjectInAim.get_path());
 				print(myPlayerID);
-				if (get_parent().get_parent().myNetworkEventHanlder.myIsConnected):
+				if (get_parent().get_parent().myNetworkEventHanlder.myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTED):
 					rpc("FireGun", myObjectInAim.get_path(), myPlayerID);
 			
 			#if(myObjectInAim.has_method("GetDamage")):

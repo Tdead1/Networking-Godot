@@ -1,1 +1,1 @@
-"D:\Program Files\Godot\Godot3.2.3.exe" DefaultScene.tscn
+"D:\Program Files\Godot\Godot3.5.exe" DefaultScene.tscn
