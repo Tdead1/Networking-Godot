@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Networking/NetworkEventHandler.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Prefabs/Dev/1x1Cube.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Prefabs/Terrain/Terrain.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Prefabs/Terrain/Rocks/DesertRockTerrace.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Prefabs/Buildings/Lobby/LobbyGeometryScene.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Prefabs/Objects/ObjectiveBoard.tscn" type="PackedScene" id=7]
+[ext_resource path="res://global.gd" type="Script" id=8]
 
 [sub_resource type="Environment" id=1]
 background_mode = 3
@@ -17,6 +19,7 @@ ambient_light_energy = 0.1
 
 [node name="Root" type="WorldEnvironment"]
 environment = SubResource( 1 )
+script = ExtResource( 8 )
 
 [node name="NetworkEventHandler" parent="." instance=ExtResource( 1 )]
 
@@ -98,3 +101,6 @@ transform = Transform( -0.360911, -0.0624255, -0.553427, -0.0867574, 0.522149, 0
 
 [node name="Lobby" parent="." instance=ExtResource( 6 )]
 transform = Transform( -0.767758, 0, -0.64074, 0, 1, 0, 0.64074, 0, -0.767758, -30.1406, -0.172315, 28.9691 )
+
+[node name="ObjectiveBoard" parent="." instance=ExtResource( 7 )]
+transform = Transform( 0.128865, 0, 0.991662, 0, 1, 0, -0.991662, 0, 0.128865, -45.8331, 2.35276, 33.0304 )

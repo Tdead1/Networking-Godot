@@ -1,8 +1,7 @@
 extends Node
 
-var myPlayers = [];
-var ids = [];
-var myEnemies = [];
+var myPlayers = {};
+var myEnemies = {};
 
 var myPlayertemplate = preload("res://Player/PlayerPawn.tscn");
 var mySphereEnemyTemplate = preload("res://Enemies/EnemySphere.tscn");
@@ -14,64 +13,109 @@ func _ready():
 	return;
 
 func ConnectPeer(id):	
-	for i in range (ids.size()):
-		rpc_id(ids[i], "CreatePlayer", id);
+	for existingID in myPlayers:
+		rpc_id(existingID, "CreatePlayer", id);
 		
 	CreatePlayer(id);
-	rpc_id(id, "CreatePlayers", ids);
+	rpc_id(id, "CreatePlayers", myPlayers.keys());
 	return;
 
 func DisconnectPeer(id):
-	for i in range (ids.size()):
-		rpc_id(ids[i], "RemovePlayer", id);
+	for existingID in myPlayers:
+		if (existingID == id):
+			continue;
+		rpc_id(existingID, "RemovePlayer", id);
 	
 	RemovePlayer(id);
 	return;
 
 func _physics_process(_delta):
-	for i in range (ids.size()):
-		for j in range (ids.size()):
-			rpc_unreliable_id(ids[i], "UpdateRemotePlayer", ids[j], myPlayers[j].transform, myPlayers[j].myCameraTransform);
-		for j in range (myEnemies.size()):
-			rpc_unreliable_id(ids[i], "UpdateSphereEnemy", myEnemies[j].id, myEnemies[j].transform);
-		
+	for contactPlayerID in myPlayers:
+		for dataPlayerID in myPlayers:
+			rpc_unreliable_id(contactPlayerID, "UpdateRemotePlayer", dataPlayerID, myPlayers[contactPlayerID].transform, myPlayers[dataPlayerID].myCameraTransform);
+		for enemyID in myEnemies:
+			rpc_unreliable_id(contactPlayerID, "UpdateSphereEnemy", enemyID, myEnemies[enemyID].transform);
 	return;
 
 master func CreatePlayer(id):
-	get_parent().debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size());
-	get_parent().debuglog += "   -> User connected.      ID: " + str(id) + "\n";
+	get_parent().myDebugLog += "Users now online: " + str(get_tree().get_network_connected_peers().size());
+	get_parent().myDebugLog += "   -> User connected.      ID: " + str(id) + "\n";
 	var newPlayer = myPlayertemplate.instance();
 	newPlayer.set_name("Player#" + str(id));
 	newPlayer.set_network_master(id);
 	get_parent().add_child(newPlayer);
-	myPlayers.append(newPlayer);
-	ids.append(id);
-	for i in range (myEnemies.size()):
-		rpc_unreliable_id(id, "CreateSphereEnemy", myEnemies[i].id);
+	myPlayers[id] = newPlayer;
+	for enemyID in myEnemies:
+		rpc_unreliable_id(id, "CreateSphereEnemy", enemyID);
 	return;
 
 master func RemovePlayer(id):
 	var oldPlayer = get_node("/root/Root/Player#" + str(id));
-	
-	get_parent().debuglog += "Users now online: " + str(get_tree().get_network_connected_peers().size()) ;
-	get_parent().debuglog += "   -> User disconnected. ID: " + str(id) + "\n";
-	myPlayers.erase(oldPlayer);
-	ids.erase(id);
-	
+	get_parent().myDebugLog += "Users now online: " + str(get_tree().get_network_connected_peers().size()) ;
+	get_parent().myDebugLog += "   -> User disconnected. ID: " + str(id) + "\n";
+	myPlayers.erase(id);
 	oldPlayer.queue_free();
 	return;
 
 master func CreateSphereEnemy(id):
 	var newEnemy = mySphereEnemyTemplate.instance();
 	get_parent().call_deferred("add_child", newEnemy);
-	newEnemy.id = id;
 	newEnemy.set_name("SphereEnemy" + str(id));
-	myEnemies.append(newEnemy);
+	myEnemies[id] = newEnemy;
+	return;
+
+
+func CreateObjective(id):
+	var player = myPlayers[id];
+	
+	var newQuest = Quest.new();
+	newQuest.myState = Quest.ObjectiveState.Active;
+	newQuest.myName = String(randi() % 20);
+	newQuest.myLocation = Vector2(rand_range(-10.0, 10.0), rand_range(-100.0, 100.0));
+	player.myObjective = newQuest;
+	get_parent().myDebugLog += "Creating new objective for " + myPlayers[id].name + "\n";	
+	rpc_id(id, "ReceiveObjective", newQuest.myState, newQuest.myName, newQuest.myLocation);
+	return;
+
+func GiveObjectiveReward(id):
+	var player = myPlayers[id];
+	player.myObjective = Quest.new();
+	rpc_id(id, "ReceiveObjectiveRewards");
+	return;
+
+# Received requests from Clients
+remote func RequestObjective(id):
+	var player = myPlayers.get(id);
+	if (player == null):
+		return;
+		 
+	get_parent().myDebugLog += "Received objective request from " + myPlayers[id].name + "\n";
+	if (player.myObjective.myState != Quest.ObjectiveState.Empty):
+		return;
+	
+	CreateObjective(id);
+	return;
+
+remote func SubmitObjectiveCompletion(id):
+	var player = myPlayers.get(id);
+	if (player == null):
+		return;
+	
+	get_parent().myDebugLog += "Received objective complete from " + myPlayers[id].name + "\n";
+	if (player.myObjective.myState != Quest.ObjectiveState.Active):
+		return;
+	
+	var distance = (player.myObjective.myLocation - Vector2(player.transform.origin.x, player.transform.origin.z)).length();
+	var shouldSubmitObjective = distance < 5.0 && player.myObjective.myState == Quest.ObjectiveState.Active;
+	get_parent().myDebugLog += "Should submit objective: " + String(shouldSubmitObjective);
+	if (shouldSubmitObjective):
+		GiveObjectiveReward(id);
+	
 	return;
 
 #func GetDamage(ID, damage):
 #	ID;
 #	damage;
-	#health -= damage;
+	#myHealth -= damage;
 	#rpc("SetHealth", health);
 #	return;

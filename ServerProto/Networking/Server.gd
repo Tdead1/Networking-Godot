@@ -1,6 +1,6 @@
 extends Node
 
-var debuglog = "Server Starting... ";
+var myDebugLog = "Server Starting... ";
 var network = NetworkedMultiplayerENet.new();
 var networkEventHandler;
 var myCollisionWorld = preload("res://DefaultScene.tscn");
@@ -14,9 +14,9 @@ func _ready():
 		world.name = "CollisionWorld";
 		get_parent().call_deferred("add_child", world);
 		
-		debuglog += "Server running on port 4242. \n";
+		myDebugLog += "Server running on port 4242. \n";
 	else:
-		debuglog += "Server setup failed!";
+		myDebugLog += "Server setup failed!";
 	
 	get_tree().set_network_peer(network);
 	network.connect("peer_connected", networkEventHandler, "ConnectPeer");

@@ -1,7 +1,5 @@
 extends Spatial
 
-var id : int = 0;
-
 func _ready():
 	rand_seed(0);
 	transform.origin = Vector3(0.0, 0.5, 0.0);

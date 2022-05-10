@@ -15,16 +15,16 @@ func _process(delta):
 	#cast_to = get_global_transform().basis.z * 1;
 
 	if(Input.get_mouse_button_mask() == BUTTON_LEFT):
-		if is_colliding():
-			if (myFireTimer <= 0.0):
-				myPlayerID = get_tree().get_network_unique_id();
-				myFireTimer = myFireTimerReset;
-				myObjectInAim = get_collider();
-				print(myObjectInAim.get_path());
-				print(myPlayerID);
-				if (get_parent().get_parent().myNetworkEventHanlder.myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTED):
-					rpc("FireGun", myObjectInAim.get_path(), myPlayerID);
-			
+		if (!is_colliding() || myFireTimer > 0.0):
+			return;
+	
+		myFireTimer = myFireTimerReset;
+		myObjectInAim = get_collider();
+		print(myObjectInAim.get_path());
+		myPlayerID = get_tree().get_network_unique_id();
+		if (get_parent().get_parent().myNetworkEventHandler.myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTED):
+			rpc("FireGun", myObjectInAim.get_path(), myPlayerID);
+		
 			#if(myObjectInAim.has_method("GetDamage")):
 			#	myObjectInAim.queue_free();
 			

@@ -1,12 +1,14 @@
 extends Spatial
+var myQuestClass = preload("res://Gameloop/Quest.gd");
 
-var health = 100.0;
 var id = "";
-var camera;
+var myHealth = 100.0;
+var myCamera;
 var myCameraTransform;
+var myObjective = myQuestClass.new();
 
 func _ready():
-	camera = get_node("PlayerCamera");
+	myCamera = get_node("PlayerCamera");
 	return;
 
 puppet func UpdatePlayerTransform(aPlayerTransform, aCameraTransform):

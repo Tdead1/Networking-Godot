@@ -5,24 +5,25 @@ var myServerAdress = "127.0.0.1";
 onready var myNetwork;
 var myConnectionStatus = NetworkedMultiplayerPeer.CONNECTION_CONNECTING;
 
+const myReplyTimeout = 5.0;
 var myConnectTimer = 0.0;
-const myConnectTimerDuration = 5.0;
+
 var myRemotePlayerScene = preload("res://Player/Remote/RemotePlayerInstance.tscn");
 var mySphereEnemyTemplate = preload("res://Prefabs/Enemies/EnemySphere.tscn");
+var myObjectiveMarkerTemplate = preload("res://Prefabs/Objects/ObjectiveMarker.tscn");
 var myRemotePlayers = [];
 var myEnemies = [];
-var myLocalPlayer;
+var myObjectiveMarker : MeshInstance = null;
+var myLocalPlayer : KinematicBody;
 var myID = 0;
 
 func _ready():
-	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received");	
+	if (get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received") != OK):
+		print("Connecting network traffic function failed in event handler!");	
 	myNetwork = NetworkedMultiplayerENet.new();
 	set_network_master(1);
 	myLocalPlayer = get_parent().get_node("PlayerPawn");
 	print("Creating client.");
-	#myNetwork.connect("connection_failed", self, "_on_connection_failed");
-	#myNetwork.connect("connection_succeeded", self, "_on_connection_success");
-
 	AttemptConnect();
 	return;
 
@@ -31,11 +32,11 @@ func _process(delta):
 	match (myConnectionStatus):
 		NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
 			myConnectTimer += delta;
-			if (myConnectTimer > myConnectTimerDuration):
+			if (myConnectTimer > myReplyTimeout):
 				newConnectionStatus = NetworkedMultiplayerPeer.CONNECTION_CONNECTING;
 		NetworkedMultiplayerPeer.CONNECTION_CONNECTING:
 			myConnectTimer += delta;
-			if (myConnectTimer > myConnectTimerDuration):
+			if (myConnectTimer > myReplyTimeout):
 				newConnectionStatus = NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED;
 			continue;
 		NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
@@ -56,10 +57,9 @@ func _process(delta):
 			AttemptConnect();
 		NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
 			ConnectionSuccess();
-			
 	#print("Connection status changed from: " + String(myConnectionStatus) + " to " + String(newConnectionStatus));
 	myConnectionStatus = newConnectionStatus;
-	
+		
 	return;
 
 func Disconnect():
@@ -70,6 +70,10 @@ func Disconnect():
 	for i in myEnemies:
 		i.queue_free();
 	myEnemies = [];
+	
+	if (myObjectiveMarker):
+		myObjectiveMarker.queue_free();
+	myLocalPlayer.myObjective = Quest.new();
 	
 	myNetwork.close_connection();
 	get_tree().set_network_peer(null);
@@ -155,7 +159,41 @@ puppet func UpdateSphereEnemy(id, transform):
 	myEnemies[id].transform = transform;
 	return;
 
+puppet func ReceiveObjective(objectiveState, name, location):
+	myLocalPlayer.myObjective.myState = objectiveState;
+	myLocalPlayer.myObjective.myName = name;
+	myLocalPlayer.myObjective.myLocation = location;
+	myObjectiveMarker = myObjectiveMarkerTemplate.instance();
+	get_parent().add_child(myObjectiveMarker);
+	myObjectiveMarker.transform.origin.x = location.x;
+	myObjectiveMarker.transform.origin.z = location.y;
+	print("Received objective.");
+	return;
+
+puppet func ReceiveObjectiveRewards():
+	# Rewards go here.
+	myObjectiveMarker.queue_free();
+	myLocalPlayer.myObjective = Quest.new();
+	print("Received reward, completed objective.");
+	return;
+
+# Requestable output events below.
+func RequestObjective():
+	if (myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTED):
+		print("Requested objective...");
+		rpc_id(1, "RequestObjective", get_tree().get_network_unique_id());
+	return;
+
+func SubmitObjectiveCompletion():
+	if (myConnectionStatus == NetworkedMultiplayerPeer.CONNECTION_CONNECTED):
+		print("Requesting objective rewards...");
+		rpc_id(1, "SubmitObjectiveCompletion", get_tree().get_network_unique_id());
+		myLocalPlayer.myObjective.myState = Quest.ObjectiveState.Submitted;
+	return;
+
+# Unspecified Package Handling:
 func _on_packet_received(_id, packet):
 	var command = packet.get_string_from_ascii();
 	print(command);
 	return;
+
