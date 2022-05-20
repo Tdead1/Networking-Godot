@@ -6,4 +6,5 @@ This repositories purpose is for me to learn more about networking in game engin
 
 Disclaimer: I haven't tested the limits of the performance.
 
-Update the Client.bat and Server.bat with the right paths for starting and removing instances of clients (or the server) seperate from the engine on windows.
+
+Update the Client.bat and Server.bat with the right paths for starting and removing instances of clients (or the server) seperate from the engine on windows. It is currently running godot 3.5.
