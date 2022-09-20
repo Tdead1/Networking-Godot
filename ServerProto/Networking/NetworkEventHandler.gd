@@ -16,8 +16,8 @@ func ConnectPeer(id):
 	for existingID in myPlayers:
 		rpc_id(existingID, "CreatePlayer", id);
 		
-	CreatePlayer(id);
 	rpc_id(id, "CreatePlayers", myPlayers.keys());
+	CreatePlayer(id);
 	return;
 
 func DisconnectPeer(id):
@@ -32,7 +32,7 @@ func DisconnectPeer(id):
 func _physics_process(_delta):
 	for contactPlayerID in myPlayers:
 		for dataPlayerID in myPlayers:
-			rpc_unreliable_id(contactPlayerID, "UpdateRemotePlayer", dataPlayerID, myPlayers[contactPlayerID].transform, myPlayers[dataPlayerID].myCameraTransform);
+			rpc_unreliable_id(contactPlayerID, "UpdateRemotePlayer", dataPlayerID, myPlayers[dataPlayerID].transform, myPlayers[dataPlayerID].myCameraTransform);
 		for enemyID in myEnemies:
 			rpc_unreliable_id(contactPlayerID, "UpdateSphereEnemy", enemyID, myEnemies[enemyID].transform);
 	return;
@@ -79,6 +79,7 @@ func CreateObjective(id):
 
 func GiveObjectiveReward(id):
 	var player = myPlayers[id];
+	get_parent().myDebugLog += "Player completed objective and has been sent a reward. \n";
 	player.myObjective = Quest.new();
 	rpc_id(id, "ReceiveObjectiveRewards");
 	return;
@@ -107,7 +108,6 @@ remote func SubmitObjectiveCompletion(id):
 	
 	var distance = (player.myObjective.myLocation - Vector2(player.transform.origin.x, player.transform.origin.z)).length();
 	var shouldSubmitObjective = distance < 5.0 && player.myObjective.myState == Quest.ObjectiveState.Active;
-	get_parent().myDebugLog += "Should submit objective: " + String(shouldSubmitObjective);
 	if (shouldSubmitObjective):
 		GiveObjectiveReward(id);
 	

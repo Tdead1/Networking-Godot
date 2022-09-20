@@ -157,6 +157,8 @@ puppet func CreateSphereEnemy(id):
 puppet func UpdateSphereEnemy(id, transform):
 	#print ("Sphere Enemy: Got update from server: " + str(id) + " " + str(transform));
 	myEnemies[id].transform = transform;
+	if (id == 1):
+		myEnemies[id].transform = myEnemies[id].transform.scaled(Vector3(0.5,0.5,0.5));
 	return;
 
 puppet func ReceiveObjective(objectiveState, name, location):

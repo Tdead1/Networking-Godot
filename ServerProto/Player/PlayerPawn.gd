@@ -1,11 +1,10 @@
 extends Spatial
-var myQuestClass = preload("res://Gameloop/Quest.gd");
 
 var id = "";
 var myHealth = 100.0;
 var myCamera;
 var myCameraTransform;
-var myObjective = myQuestClass.new();
+var myObjective = Quest.new();
 
 func _ready():
 	myCamera = get_node("PlayerCamera");
