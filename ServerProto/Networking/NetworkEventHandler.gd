@@ -61,9 +61,18 @@ master func CreateSphereEnemy(id):
 	var newEnemy = mySphereEnemyTemplate.instance();
 	get_parent().call_deferred("add_child", newEnemy);
 	newEnemy.set_name("SphereEnemy" + str(id));
+	newEnemy.id = id;
 	myEnemies[id] = newEnemy;
 	return;
 
+master func KillSphereEnemy(id):
+	for playerID in myPlayers:
+		rpc_unreliable_id(playerID, "KillSphereEnemy", id);
+	get_parent().remove_child(myEnemies[id]);
+	myEnemies[id].queue_free();
+	myEnemies.erase(id);
+	print("Server Enemy destroyed, sending to clients.");
+	return;
 
 func CreateObjective(id):
 	var player = myPlayers[id];

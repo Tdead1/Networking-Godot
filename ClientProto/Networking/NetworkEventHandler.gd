@@ -12,7 +12,7 @@ var myRemotePlayerScene = preload("res://Player/Remote/RemotePlayerInstance.tscn
 var mySphereEnemyTemplate = preload("res://Prefabs/Enemies/EnemySphere.tscn");
 var myObjectiveMarkerTemplate = preload("res://Prefabs/Objects/ObjectiveMarker.tscn");
 var myRemotePlayers = [];
-var myEnemies = [];
+var myEnemies = {};
 var myObjectiveMarker : MeshInstance = null;
 var myLocalPlayer : KinematicBody;
 var myID = 0;
@@ -69,7 +69,7 @@ func Disconnect():
 	myRemotePlayers = [];
 	for i in myEnemies:
 		i.queue_free();
-	myEnemies = [];
+	myEnemies = {};
 	
 	if (myObjectiveMarker):
 		myObjectiveMarker.queue_free();
@@ -149,9 +149,16 @@ puppet func UpdateRemotePlayer(id, playertransform, cameratransform):
 puppet func CreateSphereEnemy(id):
 	var newEnemy = mySphereEnemyTemplate.instance();
 	newEnemy.set_name("SphereEnemy" + str(id));
-	myEnemies.append(newEnemy);
+	myEnemies[id] = newEnemy;
 	get_parent().add_child(newEnemy);
 	print ("Created enemy! ID: " + str(id));
+	return;
+
+puppet func KillSphereEnemy(id):
+	get_parent().remove_child(myEnemies[id]);
+	myEnemies[id].queue_free();
+	myEnemies.erase(id);
+	print("Enemy destroyed! Maybe we will receive a reward?");
 	return;
 
 puppet func UpdateSphereEnemy(id, transform):

@@ -21,9 +21,6 @@ custom_colors/selection_color = Color( 0.124008, 0.19745, 0.246094, 1 )
 text = "Rich as fuck"
 scroll_following = true
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SendButton" type="Button" parent="."]
 anchor_top = 1.0
