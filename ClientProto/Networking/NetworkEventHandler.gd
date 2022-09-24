@@ -68,7 +68,7 @@ func Disconnect():
 		i.queue_free();
 	myRemotePlayers = [];
 	for i in myEnemies:
-		i.queue_free();
+		myEnemies[i].queue_free();
 	myEnemies = {};
 	
 	if (myObjectiveMarker):
@@ -162,14 +162,18 @@ puppet func KillSphereEnemy(id):
 	return;
 
 puppet func UpdateSphereEnemy(id, transform):
+	# enemy might still be getting spawned in from the server.
+	if (!myEnemies.has(id)):
+		return;
 	#print ("Sphere Enemy: Got update from server: " + str(id) + " " + str(transform));
 	myEnemies[id].transform = transform;
 	if (id == 1):
 		myEnemies[id].transform = myEnemies[id].transform.scaled(Vector3(0.5,0.5,0.5));
 	return;
 
-puppet func ReceiveObjective(objectiveState, name, location):
-	myLocalPlayer.myObjective.myState = objectiveState;
+puppet func ReceiveObjective(state, type, name, location):
+	myLocalPlayer.myObjective.myState = state;
+	myLocalPlayer.myObjective.myType = type;
 	myLocalPlayer.myObjective.myName = name;
 	myLocalPlayer.myObjective.myLocation = location;
 	myObjectiveMarker = myObjectiveMarkerTemplate.instance();

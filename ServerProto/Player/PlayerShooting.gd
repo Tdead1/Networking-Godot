@@ -8,4 +8,4 @@ puppet func FireGun(pathToObject, playerID):
 		if(hit_object.has_method("GetDamage")):
 			print("object HAS method for applying damage!");
 			hit_object.GetDamage(playerID, 35.0);
-	pass;
+	return;

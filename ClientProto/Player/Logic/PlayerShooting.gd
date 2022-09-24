@@ -14,7 +14,7 @@ func _process(delta):
 	#gives the third column of the transform, which is the forward.
 	#cast_to = get_global_transform().basis.z * 1;
 
-	if(Input.get_mouse_button_mask() == BUTTON_LEFT):
+	if (Input.get_mouse_button_mask() == BUTTON_LEFT):
 		if (!is_colliding() || myFireTimer > 0.0):
 			return;
 	

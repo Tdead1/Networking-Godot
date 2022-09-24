@@ -1,8 +1,7 @@
 extends KinematicBody
 
-var id = "";
-
 # Extremely good ai logic
+var mySpawnLocation := Vector2(0,0);
 var myDestination := Vector2(0,0);
 var myRandomTimer := float(0.0);
 var myIsNotMovingTimer := float(0.0);
@@ -14,7 +13,7 @@ export var mySpeed := float(4.0);
 
 func _ready():
 	rand_seed(0);
-	myDestination = Vector2(rand_range(-10.0, 10.0), rand_range(-10.0, 10.0));
+	myDestination = mySpawnLocation + Vector2(rand_range(-10.0, 10.0), rand_range(-10.0, 10.0));
 	return;
 	
 func _process(delta):
@@ -46,5 +45,5 @@ func _physics_process(delta):
 func GetDamage(attackerID, damageAmount):
 	myHealth -= damageAmount;
 	if (myHealth < 0):
-		get_parent().get_node("NetworkEventHandler").KillSphereEnemy(id);
+		get_parent().get_node("NetworkEventHandler").KillSphereEnemy(get_instance_id());
 	return;
