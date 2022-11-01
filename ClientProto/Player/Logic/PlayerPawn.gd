@@ -12,24 +12,22 @@ export var mySprintAcceleration = 200;
 export var myMaxSpeed = 15;
 export var myMaxSprintSpeed = 30;
 export var myFriction = 3;
+
+onready var myCamera = get_node("PlayerCamera");
+onready var myNetworkEventHandler = get_parent().get_node("NetworkEventHandler");
+onready var myCollisionShape = get_node("PhysicsCollisionShape");
+
 var myIsSprinting = false;
 var myMoveInput = Vector3(0,0,0);
 var myHealth = 100.0;
-var myCamera;
-var myNetworkEventHandler;
-var myCollisionShape : CollisionShape;
 var myVelocity = Vector3(0,0,0);
 var myGravity = 0.5;
 var myJumpStatus = JumpStatus.Default;
-
 var myObjective = Quest.new();
 
 func _ready():
 	get_tree().current_scene.SetLocalPlayer(self); 
 	set_network_master(get_tree().get_network_unique_id());
-	myCamera = get_node("PlayerCamera");
-	myCollisionShape = get_node("PhysicsCollisionShape");
-	myNetworkEventHandler = get_parent().get_node("NetworkEventHandler");
 	return;
 
 func _process(_delta):
